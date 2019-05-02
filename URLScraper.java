@@ -26,6 +26,10 @@ public class URLScraper {
 
             if (line.contains("The flag is currently ")) {
                 flagColor = line.substring(line.indexOf("<strong>") + 8, line.indexOf("</strong>"));
+                
+                // If the flag is Red/Yellow, most boats won't go out so we'll assume it's red for sake of simplicity 
+                if (flagColor.equals("Red/Yellow"))
+                    flagColor = "Red";
             }
 
         }
