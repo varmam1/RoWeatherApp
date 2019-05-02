@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class URLScraper {
+public class FlagGetter {
 
     /**
      * @return : String:
