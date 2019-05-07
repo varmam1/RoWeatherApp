@@ -21,7 +21,6 @@ public class CityDataFinder {
             JSONParser jsonParser = new JSONParser();
             JSONObject collectedData = (JSONObject) jsonParser.parse(new InputStreamReader(in, "UTF-8"));
 
-            System.out.println(collectedData);
             Map mainData = (Map) collectedData.get("main");
             for (Object entry : mainData.keySet()) {
                 Object paired = mainData.get(entry);
@@ -43,8 +42,6 @@ public class CityDataFinder {
                     cityData.put((String) entry, sameValue);
                 }
             }
-
-            System.out.println(cityData);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
