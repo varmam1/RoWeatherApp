@@ -27,7 +27,6 @@ public class CityDataFinder {
             for (Object u : ListOfPredictions) {
                 cityDataForParticularDT = new HashMap<>();
                 Map tmpEntry = (Map) u;
-
                 long predictionTime = (long) tmpEntry.get("dt");
                 Map mainData = (Map) tmpEntry.get("main");
                 for (Object entry : mainData.keySet()) {
@@ -52,7 +51,6 @@ public class CityDataFinder {
                         cityDataForParticularDT.put((String) entry, sameValue);
                     }
                 }
-
                 cityDataForTheWholeDay.put(predictionTime, cityDataForParticularDT);
             }
         } catch (MalformedURLException e) {
