@@ -12,15 +12,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
 public class CityDataFinder {
-    /*
-    Class to find weather data for particular cities
-    CityDataFinder(String name) :
-    */
+    //Class to find weather data for particular cities
     private static final String APIKEY = "e63d6d93d6cba955e0c5a04fe508c08f";
     private Map<String, Double> cityDataForParticularDT = null;
-    private Map<Long, Map<String, Double>> cityDataForTheWholeDay;
+    private TreeMap<Long, Map<String, Double>> cityDataForTheWholeDay;
 
     public CityDataFinder(String cityName) {
+        //fetches data for a particular city
+        //the data is available for hours being multiples of three, that is: 0:00, 3:00, 6:00, 9:00, ..., 21:00.
+        //for other hours, the function returns the first available forecast in the future
         cityDataForTheWholeDay = new TreeMap<>();
         String queryWebsite = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=" + APIKEY;
         try {
@@ -66,7 +66,12 @@ public class CityDataFinder {
         }
     }
 
-    public static Map<String, Double> getCurrentForecast(String cityName) {
+    public static Map<String, Double> getCurrentWeather(String cityName) {
+        //returns current weather in the form of Map<String, Double> used for other functions
+        //Parameters in the map:
+        //"temp", "temp_min", "deg" (wind direction), "pressure", "temp_max", "speed" (wind speed)
+        //Strongly advised to use CityDataFinder functions to extract a certain weather feature,
+        //because by default some of these might be returned in counterintuitive units
         Map<String, Double> cityData = new HashMap<>();
         String queryWebsite = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&APPID=" + APIKEY;
         try {
@@ -96,7 +101,6 @@ public class CityDataFinder {
                 }
             }
 
-            System.out.println(cityData);
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
@@ -111,32 +115,42 @@ public class CityDataFinder {
     }
 
     public Map<String, Double> todayForecastInTimeT(long time) {
-        return new HashMap<String, Double>(cityDataForTheWholeDay.get(time));
+        //Input: time of the day for which we would like to get the data
+
+        //returns current weather in the form of Map<String, Double> used for other functions
+        //Parameters in the map:
+        //"temp", "temp_min", "deg" (wind direction), "pressure", "temp_max", "speed" (wind speed)
+        //Strongly advised to use CityDataFinder functions to extract a certain weather feature,
+        //because by default some of these might be returned in counterintuitive units
+        if (cityDataForTheWholeDay.higherEntry(time) == null) return cityDataForTheWholeDay.pollLastEntry().getValue();
+        return new TreeMap<String, Double>(cityDataForTheWholeDay.higherEntry(time).getValue());
     }
 
-    public double getHumidity(Map <String, Double> data) { //returned in 100 * %
+    public static double getHumidity(Map <String, Double> data) { //returned in 100 * %
         return data.getOrDefault("humidity", 90.0);
     }
 
-    public double getTemperature(Map <String, Double> data) { //need to convert from kelvin to celsius
+    public static double getTemperature(Map <String, Double> data) { //converts from kelvin to celsius
         return data.get("temp") - 273.15;
     }
 
-    public double getWindSpeed(Map <String, Double> data) { //returned in m/s
+    public static double getWindSpeed(Map <String, Double> data) { //returned in m/s
         return data.getOrDefault("speed", 0.0);
     }
 
-    public double getWindDirection(Map <String, Double> data) { //
+    public static double getWindDirection(Map <String, Double> data) { //
         return data.getOrDefault("deg", 0.0);
     }
 
-    public double getFeelsLikeTemperature(Map <String, Double> data) { //https://pl.wikipedia.org/wiki/Temperatura_odczuwalna
-        double V = this.getWindSpeed(data) * 3.6;
-        double T = this.getTemperature(data);
+    public static double getFeelsLikeTemperature(Map <String, Double> data) { //https://pl.wikipedia.org/wiki/Temperatura_odczuwalna
+        double V = getWindSpeed(data) * 3.6;
+        double T = getTemperature(data);
         return 13.12 + 0.6215 * T - 11.37*Math.pow(V, 0.16) + 0.3965 * T * Math.pow(V, 0.16);
     }
 
     public static void main(String[] args) {
-        CityDataFinder df = new CityDataFinder("Cambridge");
+        //CityDataFinder df = new CityDataFinder("Cambridge");
+        //System.out.println(CityDataFinder.getCurrentWeather("Szczecin"));
+        System.out.println(getFeelsLikeTemperature(getCurrentWeather("Cambridge")));
     }
 }
