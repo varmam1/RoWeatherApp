@@ -2,6 +2,7 @@ package RoWeatherApp;
 
 import javafx.application.Application;
 import javafx.event.*;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -14,18 +15,6 @@ import javafx.stage.*;
 
 
 public class BasicJavaFX extends Application {
-
-    public void backToMain(){
-
-    }
-
-    public void changeToAlarm(){
-
-    }
-
-    public Scene changeToSettings(Stage primaryStage, Scene main){
-        return new SettingsPage(true, false).getScene(primaryStage, main);
-    }
 
     @Override
     public void start(final Stage primaryStage) throws IOException {
@@ -57,9 +46,10 @@ public class BasicJavaFX extends Application {
 //        primaryStage.show();
 
         // The following code loads in an FXML doc:
-//
-        Parent root = FXMLLoader.load(getClass().getResource("MainScene.fxml"));
-        Scene scene = new Scene(root, 750/2.0, 1334/2.0);
+
+        AnchorPane root = FXMLLoader.load(getClass().getResource("MainScene.fxml"));
+        Scene scene = new Scene(root, 400, 700);
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
