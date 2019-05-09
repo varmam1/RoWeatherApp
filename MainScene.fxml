@@ -17,7 +17,7 @@
       <ImageView fx:id="flag" fitHeight="162.0" fitWidth="96.0" layoutX="20.0" layoutY="196.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="settings" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Gear" />
       <Button fx:id="alarm" layoutX="87.0" layoutY="14.0" mnemonicParsing="false" text="Alarm" />
-      <Text fx:id="info" layoutX="144.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This should be where temperature, feels like and wind is" wrappingWidth="142.74609375" />
+      <Text fx:id="info" layoutX="144.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20; -fx-font-family: 'Comic Sans MS' ;" text="This should be where temperature, feels like and wind is" wrappingWidth="142.74609375" />
       <Text fx:id="alarmTime" layoutX="153.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time - ON/OFF" wrappingWidth="142.74609375" />
       <Text layoutX="41.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TODAY/TOMORROW/ETC" wrappingWidth="160.74609375" />
       <Text layoutX="26.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Early Morning" wrappingWidth="95.99999511241913" />
