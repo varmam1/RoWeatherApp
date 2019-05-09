@@ -16,13 +16,14 @@ public class CityDataFinder {
     private static final String APIKEY = "e63d6d93d6cba955e0c5a04fe508c08f";
     private Map<String, Double> cityDataForParticularDT = null;
     private TreeMap<Long, Map<String, Double>> cityDataForTheWholeDay;
-
+    private final static String[] numbersToDescriptionsMapping = {"Clouds", "Snow", "Extreme", "Clear", "Rain", "Thunderstorm", "Haze", "Drizzle", "Mist", "Dust", "Fog"};
     public CityDataFinder(String cityName) {
         //fetches data for a particular city
         //the data is available for hours being multiples of three, that is: 0:00, 3:00, 6:00, 9:00, ..., 21:00.
         //for other hours, the function returns the first available forecast in the future
         cityDataForTheWholeDay = new TreeMap<>();
         String queryWebsite = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=" + APIKEY;
+        System.out.println(queryWebsite);
         try {
             BufferedInputStream in = new BufferedInputStream(new URL(queryWebsite).openStream());
             JSONParser jsonParser = new JSONParser();
@@ -89,6 +90,9 @@ public class CityDataFinder {
                     cityData.put((String) entry, sameValue);
                 }
             }
+            System.out.println(collectedData.get("weather"));
+            System.out.println(collectedData.get("wind"));
+            System.out.println(collectedData.get("main"));
 
             mainData = (Map) collectedData.get("wind");
             for (Object entry : mainData.keySet()) {
@@ -98,6 +102,20 @@ public class CityDataFinder {
                     long value = (Long) paired;
                     double sameValue = value;
                     cityData.put((String) entry, sameValue);
+                }
+            }
+
+            Map<String, Double> descriptionsToNumbersMapping = new HashMap<>();
+            for (int iter = 0; iter < numbersToDescriptionsMapping.length; ++iter) {
+                descriptionsToNumbersMapping.put(numbersToDescriptionsMapping[iter], (double)iter);
+            }
+
+            List thisAPIisStupid = (List)collectedData.get("weather"); //why tf it returns a list of just one element
+            mainData = (Map) thisAPIisStupid.get(0);
+            for (Object entry : mainData.keySet()) {
+                Object paired = mainData.get(entry);
+                if (entry instanceof String && paired instanceof String && entry.equals("main")) {
+                    cityData.put("description", descriptionsToNumbersMapping.getOrDefault(paired, 0.0));
                 }
             }
 
@@ -126,6 +144,10 @@ public class CityDataFinder {
         return new TreeMap<String, Double>(cityDataForTheWholeDay.higherEntry(time).getValue());
     }
 
+    public static String getWeatherType(Map <String, Double> data) {
+        String desc = "description";
+        return numbersToDescriptionsMapping[(int)Math.round(data.getOrDefault(desc, 0.0))];
+    }
     public static double getHumidity(Map <String, Double> data) { //returned in 100 * %
         return data.getOrDefault("humidity", 90.0);
     }
@@ -150,7 +172,7 @@ public class CityDataFinder {
 
     public static void main(String[] args) {
         //CityDataFinder df = new CityDataFinder("Cambridge");
-        //System.out.println(CityDataFinder.getCurrentWeather("Szczecin"));
-        System.out.println(getFeelsLikeTemperature(getCurrentWeather("Cambridge")));
+        //System.out.println(CityDataFinder.getCurrentWeather(""));
+        System.out.println(getWeatherType(getCurrentWeather("Cambridge")));
     }
 }
