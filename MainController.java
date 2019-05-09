@@ -16,8 +16,8 @@ public class MainController {
     @FXML
     private void initialize(){
         //This will get the temperature from the weather API and the feels like and display it in the info text
-        info.setText(Math.round(weatherAPI.getFeelsLikeTemperature(weather)) + "°" + "\n Actually: " +
-                Math.round(weatherAPI.getFeelsLikeTemperature(weather)) + "°");
+        info.setText(Math.round(CityDataFinder.getFeelsLikeTemperature(weather)) + "°" + "\n Actually: " +
+                Math.round(CityDataFinder.getFeelsLikeTemperature(weather)) + "°");
     }
 
 }
