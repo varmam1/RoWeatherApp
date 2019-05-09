@@ -16,11 +16,11 @@ public class SettingsPage extends Application {
         this.isColorBlind = isColorBlind;
     }
 
-    public Scene getScene(){
+    public Scene getScene(Stage primaryStage, Scene main){
         Group root = new Group();
-
-        root.getChildren().add(new Button("[Placeholder Text]"));
-
+        Button back = new Button("[Back to Home]");
+        back.setOnAction(e -> primaryStage.setScene(main));
+        root.getChildren().add(back);
         Scene scene = new Scene(root, 750/2.0, 1334/2.0);
         return scene;
     }
@@ -28,7 +28,7 @@ public class SettingsPage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("RoWeather App");
-        primaryStage.setScene(getScene());
+//        primaryStage.setScene(getScene());
         primaryStage.show();
     }
 }
