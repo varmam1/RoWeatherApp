@@ -8,7 +8,7 @@ import java.util.Map;
 public class MainController {
 
     private CityDataFinder weatherAPI = new CityDataFinder("Cambridge,UK");
-    private Map<String, Double> weather = CityDataFinder.getCurrentForecast("Cambridge,UK");
+    private Map<String, Double> weather = CityDataFinder.getCurrentWeather("Cambridge,UK");
 
     @FXML
     private Text info;
