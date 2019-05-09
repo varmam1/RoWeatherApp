@@ -62,6 +62,50 @@ public class CityDataFinder {
         }
     }
 
+    public Map<String, Double> getCurrentForecast(String cityName) {
+        Map<String, Double> cityData = new HashMap<>();
+        String queryWebsite = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&APPID=" + APIKEY;
+        try {
+            BufferedInputStream in = new BufferedInputStream(new URL(queryWebsite).openStream());
+            JSONParser jsonParser = new JSONParser();
+            JSONObject collectedData = (JSONObject) jsonParser.parse(new InputStreamReader(in, "UTF-8"));
+
+            Map mainData = (Map) collectedData.get("main");
+            for (Object entry : mainData.keySet()) {
+                Object paired = mainData.get(entry);
+                if (paired instanceof Double) cityData.put((String) entry, (double) mainData.get(entry));
+                else if (paired instanceof Long) {
+                    long value = (Long) paired;
+                    double sameValue = value;
+                    cityData.put((String) entry, sameValue);
+                }
+            }
+
+            mainData = (Map) collectedData.get("wind");
+            for (Object entry : mainData.keySet()) {
+                Object paired = mainData.get(entry);
+                if (paired instanceof Double) cityData.put((String) entry, (double) mainData.get(entry));
+                else if (paired instanceof Long) {
+                    long value = (Long) paired;
+                    double sameValue = value;
+                    cityData.put((String) entry, sameValue);
+                }
+            }
+
+            System.out.println(cityData);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return cityData;
+    }
+
     public Map<String, Double> todayForecastInTimeT(long time) {
         return new HashMap<String, Double>(cityDataForTheWholeDay.get(time));
     }
@@ -88,7 +132,7 @@ public class CityDataFinder {
         return 13.12 + 0.6215 * T - 11.37*Math.pow(V, 0.16) + 0.3965 * T * Math.pow(V, 0.16);
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         CityDataFinder df = new CityDataFinder("Cambridge");
     }
 }
