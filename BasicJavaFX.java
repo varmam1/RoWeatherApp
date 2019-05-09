@@ -1,15 +1,9 @@
 package RoWeatherApp;
 
 import javafx.application.Application;
-import javafx.event.*;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import java.io.IOException;
 import javafx.stage.*;
 
