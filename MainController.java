@@ -8,15 +8,16 @@ import java.util.Map;
 public class MainController {
 
     private CityDataFinder weatherAPI = new CityDataFinder("Cambridge,UK");
-    private Map<String, Double> weather = CityDataFinder.getCurrentForecast("Cambridge,UK");
+    private Map<String, Double> weather = CityDataFinder.getCurrentWeather("Cambridge,UK");
 
     @FXML
     private Text info;
 
     @FXML
     private void initialize(){
-        info.setText(weatherAPI.getTemperature(weather) + "°" + " and feels like: " +
-                weatherAPI.getFeelsLikeTemperature(weather) + "°");
+        //This will get the temperature from the weather API and the feels like and display it in the info text
+        info.setText(Math.round(CityDataFinder.getFeelsLikeTemperature(weather)) + "°" + "\n Actually: " +
+                Math.round(CityDataFinder.getFeelsLikeTemperature(weather)) + "°");
     }
 
 }
