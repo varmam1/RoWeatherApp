@@ -12,6 +12,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
 public class CityDataFinder {
+    /*
+    Class to find weather data for particular cities
+    CityDataFinder(String name) :
+    */
     private static final String APIKEY = "e63d6d93d6cba955e0c5a04fe508c08f";
     private Map<String, Double> cityDataForParticularDT = null;
     private Map<Long, Map<String, Double>> cityDataForTheWholeDay;
@@ -62,7 +66,7 @@ public class CityDataFinder {
         }
     }
 
-    public Map<String, Double> getCurrentForecast(String cityName) {
+    public static Map<String, Double> getCurrentForecast(String cityName) {
         Map<String, Double> cityData = new HashMap<>();
         String queryWebsite = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&APPID=" + APIKEY;
         try {
