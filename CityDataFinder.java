@@ -23,7 +23,6 @@ public class CityDataFinder {
         //for other hours, the function returns the first available forecast in the future
         cityDataForTheWholeDay = new TreeMap<>();
         String queryWebsite = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=" + APIKEY;
-        System.out.println(queryWebsite);
         try {
             BufferedInputStream in = new BufferedInputStream(new URL(queryWebsite).openStream());
             JSONParser jsonParser = new JSONParser();
@@ -56,6 +55,22 @@ public class CityDataFinder {
                         cityDataForParticularDT.put((String) entry, sameValue);
                     }
                 }
+
+                Map<String, Double> descriptionsToNumbersMapping = new HashMap<>();
+                for (int iter = 0; iter < numbersToDescriptionsMapping.length; ++iter) {
+                    descriptionsToNumbersMapping.put(numbersToDescriptionsMapping[iter], (double)iter);
+                }
+
+                List thisAPIisStupid = (List)tmpEntry.get("weather"); //why tf it returns a list of just one element
+                mainData = (Map) thisAPIisStupid.get(0);
+                for (Object entry : mainData.keySet()) {
+                    Object paired = mainData.get(entry);
+                    if (entry instanceof String && paired instanceof String && entry.equals("main")) {
+                        cityDataForParticularDT.put("description", descriptionsToNumbersMapping.getOrDefault(paired, 0.0));
+                    }
+                }
+
+
                 cityDataForTheWholeDay.put(predictionTime, cityDataForParticularDT);
             }
         } catch (MalformedURLException e) {
@@ -90,9 +105,6 @@ public class CityDataFinder {
                     cityData.put((String) entry, sameValue);
                 }
             }
-            System.out.println(collectedData.get("weather"));
-            System.out.println(collectedData.get("wind"));
-            System.out.println(collectedData.get("main"));
 
             mainData = (Map) collectedData.get("wind");
             for (Object entry : mainData.keySet()) {
@@ -171,7 +183,7 @@ public class CityDataFinder {
     }
 
     public static void main(String[] args) {
-        //CityDataFinder df = new CityDataFinder("Cambridge");
+        CityDataFinder df = new CityDataFinder("Cambridge");
         //System.out.println(CityDataFinder.getCurrentWeather(""));
         System.out.println(getWeatherType(getCurrentWeather("Cambridge")));
     }
