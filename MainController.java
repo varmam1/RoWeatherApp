@@ -24,13 +24,13 @@ public class MainController {
     private ImageView flagPic;
 
     @FXML
-    private Button settings;
-
-    @FXML
     private ToggleButton isFahrenheit;
 
     @FXML
     private AnchorPane settingsPage;
+
+    @FXML
+    private AnchorPane alarmSettings;
 
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius){
@@ -50,25 +50,24 @@ public class MainController {
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°");
         } else {
-            info.setText(roundedFL + "°" + "\nActually: " + roundedActual + "°");
+            info.setText(roundedFL + "°" + "\nActual: " + roundedActual + "°");
         }
-
 
         //This should take the flag and display the correct one
         try {
             String f = FlagGetter.getFlagColor();
             if (f.equals("Green")){
-                FileInputStream input = new FileInputStream("src/RoWeatherApp/Green Flag.png"); //Root is Project
+                FileInputStream input = new FileInputStream("Green Flag.png"); //Root is Project
                 Image image = new Image(input);
                 flagPic.setImage(image);
             }
             else if (f.equals("Yellow")){
-                FileInputStream input = new FileInputStream("src/RoWeatherApp/Yellow Flag.png"); //Root is Project
+                FileInputStream input = new FileInputStream("Yellow Flag.png"); //Root is Project
                 Image image = new Image(input);
                 flagPic.setImage(image);
             }
             else{
-                FileInputStream input = new FileInputStream("src/RoWeatherApp/Red Flag.png"); //Root is Project
+                FileInputStream input = new FileInputStream("Red Flag.png"); //Root is Project
                 Image image = new Image(input);
                 flagPic.setImage(image);
             }
@@ -76,7 +75,8 @@ public class MainController {
             e.printStackTrace();
         }
 
-        isFahrenheit.setOnAction(new EventHandler<ActionEvent>() {
+        //The following gives the unit converter button an event handler to change units
+        isFahrenheit.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 if (!isFahrenheit.isSelected()){
@@ -102,7 +102,23 @@ public class MainController {
 
     @FXML
     public void showSettings(ActionEvent event){
-        settingsPage.setVisible(!settingsPage.isVisible());
+        if (alarmSettings.isVisible()){
+            alarmSettings.setVisible(false);
+            settingsPage.setVisible(true);
+        }
+        else {
+            settingsPage.setVisible(!settingsPage.isVisible());
+        }
     }
 
+    @FXML
+    public void showAlarmSettings(ActionEvent event){
+        if (settingsPage.isVisible()){
+            settingsPage.setVisible(false);
+            alarmSettings.setVisible(true);
+        }
+        else {
+            alarmSettings.setVisible(!alarmSettings.isVisible());
+        }
+    }
 }
