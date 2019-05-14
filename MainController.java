@@ -1,8 +1,9 @@
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
@@ -38,8 +39,7 @@ public class MainController {
     }
 
     // Will set icon to the weatherType image on the condition that the image is the weatherType.png
-    private void setWeatherPicture(ImageView icon) throws FileNotFoundException {
-        String weatherType = CityDataFinder.getWeatherType(weather);
+    private void setWeatherPicture(ImageView icon, String weatherType) throws FileNotFoundException {
         FileInputStream input = new FileInputStream(weatherType + ".png");
         Image image = new Image(input);
         icon.setImage(image);
@@ -56,18 +56,20 @@ public class MainController {
         int roundedActual = (int) Math.round(actual);
 
         if (roundedActual == roundedFL) {
-            info.setText(roundedFL + "°");
+            info.setText(roundedFL + "°C");
         } else {
-            info.setText(roundedFL + "°" + "\nActual: " + roundedActual + "°");
+            info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
         }
 
         try {
-            setWeatherPicture(weatherIcon);
+//            setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
 
             //This should take the flag and display the correct one
             FileInputStream input = new FileInputStream(FlagGetter.getFlagColor() + " Flag.png");
             Image image = new Image(input);
             flagPic.setImage(image);
+//            flagPic.addEventHandler(MouseEvent.MOUSE_CLICKED, this::showAlarmSettings);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,9 +78,9 @@ public class MainController {
         isFahrenheit.setOnAction((e -> {
                 if (!isFahrenheit.isSelected()){
                     if (roundedActual == roundedFL) {
-                        info.setText(roundedFL + "°");
+                        info.setText(roundedFL + "°C");
                     } else {
-                        info.setText(roundedFL + "°" + "\nActually: " + roundedActual + "°");
+                        info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
                     }
                 }
                 else {
@@ -86,9 +88,9 @@ public class MainController {
                     int act = freedomUnitsConverter(CityDataFinder.getTemperature(weather));
 
                     if (fl == act) {
-                        info.setText(fl + "°");
+                        info.setText(fl + "°F");
                     } else {
-                        info.setText(fl + "°" + "\nActually: " + act + "°");
+                        info.setText(fl + "°F" + "\nActually: " + act + "°F");
                     }
                 }
             }
@@ -96,7 +98,7 @@ public class MainController {
     }
 
     @FXML
-    public void showSettings(ActionEvent event){
+    public void showSettings(Event event){
         if (alarmSettings.isVisible()){
             alarmSettings.setVisible(false);
             settingsPage.setVisible(true);
@@ -107,7 +109,7 @@ public class MainController {
     }
 
     @FXML
-    public void showAlarmSettings(ActionEvent event){
+    public void showAlarmSettings(Event event){
         if (settingsPage.isVisible()){
             settingsPage.setVisible(false);
             alarmSettings.setVisible(true);
