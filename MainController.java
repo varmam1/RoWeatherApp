@@ -79,20 +79,15 @@ public class MainController {
         int roundedFL = (int) Math.round(feelsLike);
         int roundedActual = (int) Math.round(actual);
 
-       Date Current_BreakDown_Day = new Date();//automatically set to current system date on ini
-        CityDataFinder CamWeather = new CityDataFinder("Cambridge, UK");
+        Date Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+        // CityDataFinder CamWeather = new CityDataFinder("Cambridge, UK");
 
-
-
-        Day_Icon_Early = CamWeather
         //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°C");
         } else {
             info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
         }
-
-
 
         try {
             setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
