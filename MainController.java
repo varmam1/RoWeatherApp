@@ -17,40 +17,40 @@ public class MainController {
     private Map<String, Double> weather = CityDataFinder.getCurrentWeather("Cambridge,UK");
 
     @FXML
-    private Text info;
+    private Text info; //Temperature info text
 
     @FXML
-    private ImageView weatherIcon;
+    private ImageView weatherIcon; // Current weather icon
 
     @FXML
-    private ImageView flagPic;
+    private ImageView flagPic; //Picture of the flag
 
     @FXML
-    private ToggleButton isFahrenheit;
+    private ToggleButton isFahrenheit; //Button to change between units
 
     @FXML
-    private ToggleButton colourblind;
+    private ToggleButton colourblind; //Button to change whether you're colorblind or not
 
     @FXML
-    private Text colourblindText;
+    private Text colourblindText; //Will put flag color if you said you're colorblind
 
     @FXML
-    private AnchorPane settingsPage;
+    private AnchorPane settingsPage; //Page with the settings (isFahrenheit and colourblind)
 
     @FXML
-    private AnchorPane alarmSettings;
+    private AnchorPane alarmSettings; //Page with the alarm
 
     @FXML
-    private ImageView Day_Icon_Early;
+    private ImageView Day_Icon_Early; //Early morning weather icon for a day
 
     @FXML
-    private ImageView Day_Icon_Morning;
+    private ImageView Day_Icon_Morning; //Morning weather icon for a day
 
     @FXML
-    private ImageView Day_Icon_Afternoon;
+    private ImageView Day_Icon_Afternoon; //Afternoon weather icon for a day
 
     @FXML
-    private ImageView Day_Icon_Evening;
+    private ImageView Day_Icon_Evening; //Evening weather icon for a day
 
     private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
 
@@ -71,21 +71,11 @@ public class MainController {
     @FXML
     private void initialize() throws FileNotFoundException {
         //This will get the temperature from the weather API and the feels like and display it in the info text
-
         double feelsLike = CityDataFinder.getFeelsLikeTemperature(weather);
-
         double actual = CityDataFinder.getTemperature(weather);
-
 
         int roundedFL = (int) Math.round(feelsLike);
         int roundedActual = (int) Math.round(actual);
-
-        Current_BreakDown_Day = new Date();//automatically set to current system date on ini
-
-        ForecastInfo = new CityDataFinder("Cambridge, UK");
-
-        UpdateForecastBreakdown();
-
 
         //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
@@ -95,7 +85,14 @@ public class MainController {
         }
 
 
+        //This will set the forecast at the bottom correctly
+        Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+        ForecastInfo = new CityDataFinder("Cambridge, UK");
+        UpdateForecastBreakdown();
+
+
         try {
+            //This will set the weather for the current time
             setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
 
             //This should take the flag and display the correct one
@@ -128,6 +125,8 @@ public class MainController {
             }
         }
         ));
+
+        //The following gives the colorblind button the event handler to say what the flag is or not
         colourblind.setOnAction((e -> {
             if (colourblind.isSelected()) {
                 try {
@@ -140,8 +139,11 @@ public class MainController {
             }
         }
         ));
+
     }
 
+
+    // This will show the settings page or take it away depending on if it is there as well as if the alarm page is there
     @FXML
     public void showSettings(Event event){
         if (alarmSettings.isVisible()){
@@ -153,6 +155,7 @@ public class MainController {
         }
     }
 
+    // Settings page method but for the alarm page
     @FXML
     public void showAlarmSettings(Event event){
         if (settingsPage.isVisible()){
@@ -172,7 +175,9 @@ public class MainController {
         return ToUpdate.getTime();
     }
 
-    public long getTimeForDayPoint( int hour){
+
+    //Gets the long for an hour of the day
+    public long getTimeForDayPoint(int hour){
         Date ToUpdate = (Date)Current_BreakDown_Day.clone();
         ToUpdate.setHours(hour);
         ToUpdate.setMinutes(0);
@@ -180,7 +185,8 @@ public class MainController {
         return ToUpdate.getTime();
     }
 
-    private void UpdateForecastBreakdown ()throws FileNotFoundException{//Assumes an updated date to base the update off of.
+    //Updates forecast at the bottom of the screen
+    private void UpdateForecastBreakdown() throws FileNotFoundException{ //Assumes an updated date to base the update off of.
         Map<String,Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
         Map<String,Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
         Map<String,Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
