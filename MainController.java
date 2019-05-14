@@ -65,15 +65,20 @@ public class MainController {
         //This will get the temperature from the weather API and the feels like and display it in the info text
 
         double feelsLike = CityDataFinder.getFeelsLikeTemperature(weather);
+
         double actual = CityDataFinder.getTemperature(weather);
+
+
 
         int roundedFL = (int) Math.round(feelsLike);
         int roundedActual = (int) Math.round(actual);
 
        Date Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+        CityDataFinder CamWeather = new CityDataFinder("Cambridge, UK");
 
 
-        
+
+        Day_Icon_Early = CamWeather
         //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°C");
