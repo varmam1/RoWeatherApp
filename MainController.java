@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 public class MainController {
@@ -33,6 +34,13 @@ public class MainController {
     @FXML
     private AnchorPane alarmSettings;
 
+
+    @FXML
+    private ImageView Day_Icon_Early;
+
+
+    private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
+
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius){
         return (int)Math.round((1.8*celsius) + 32);
@@ -55,6 +63,10 @@ public class MainController {
         int roundedFL = (int) Math.round(feelsLike);
         int roundedActual = (int) Math.round(actual);
 
+       Date Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+
+
+        //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°C");
         } else {
