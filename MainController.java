@@ -1,9 +1,5 @@
-package RoWeatherApp;
-
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -76,9 +72,7 @@ public class MainController {
         }
 
         //The following gives the unit converter button an event handler to change units
-        isFahrenheit.setOnAction(new EventHandler<>() {
-            @Override
-            public void handle(ActionEvent event) {
+        isFahrenheit.setOnAction((e -> {
                 if (!isFahrenheit.isSelected()){
                     if (roundedActual == roundedFL) {
                         info.setText(roundedFL + "°");
@@ -97,7 +91,7 @@ public class MainController {
                     }
                 }
             }
-        });
+        ));
     }
 
     @FXML
