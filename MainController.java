@@ -40,7 +40,7 @@ public class MainController {
 
     // Will set icon to the weatherType image on the condition that the image is the weatherType.png
     private void setWeatherPicture(ImageView icon, String weatherType) throws FileNotFoundException {
-        FileInputStream input = new FileInputStream(weatherType + ".png");
+        FileInputStream input = new FileInputStream("icon_" + weatherType + ".png");
         Image image = new Image(input);
         icon.setImage(image);
     }
@@ -62,7 +62,7 @@ public class MainController {
         }
 
         try {
-//            setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
+            setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
 
             //This should take the flag and display the correct one
             FileInputStream input = new FileInputStream(FlagGetter.getFlagColor() + " Flag.png");
