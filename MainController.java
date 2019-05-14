@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
@@ -15,6 +16,9 @@ public class MainController {
 
     @FXML
     private Text info;
+
+    @FXML
+    private ImageView weatherIcon;
 
     @FXML
     private ImageView flagPic;
@@ -33,6 +37,14 @@ public class MainController {
         return (int)Math.round((1.8*celsius) + 32);
     }
 
+    // Will set icon to the weatherType image on the condition that the image is the weatherType.png
+    private void setWeatherPicture(ImageView icon) throws FileNotFoundException {
+        String weatherType = CityDataFinder.getWeatherType(weather);
+        FileInputStream input = new FileInputStream(weatherType + ".png");
+        Image image = new Image(input);
+        icon.setImage(image);
+    }
+
     @FXML
     private void initialize(){
         //This will get the temperature from the weather API and the feels like and display it in the info text
@@ -49,24 +61,13 @@ public class MainController {
             info.setText(roundedFL + "°" + "\nActual: " + roundedActual + "°");
         }
 
-        //This should take the flag and display the correct one
         try {
-            String f = FlagGetter.getFlagColor();
-            if (f.equals("Green")){
-                FileInputStream input = new FileInputStream("Green Flag.png"); //Root is Project
-                Image image = new Image(input);
-                flagPic.setImage(image);
-            }
-            else if (f.equals("Yellow")){
-                FileInputStream input = new FileInputStream("Yellow Flag.png"); //Root is Project
-                Image image = new Image(input);
-                flagPic.setImage(image);
-            }
-            else{
-                FileInputStream input = new FileInputStream("Red Flag.png"); //Root is Project
-                Image image = new Image(input);
-                flagPic.setImage(image);
-            }
+            setWeatherPicture(weatherIcon);
+
+            //This should take the flag and display the correct one
+            FileInputStream input = new FileInputStream(FlagGetter.getFlagColor() + " Flag.png");
+            Image image = new Image(input);
+            flagPic.setImage(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
