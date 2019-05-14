@@ -39,10 +39,16 @@
       <ImageView fx:id="day_icon_morning" fitHeight="101.0" fitWidth="96.0" layoutX="115.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="day_icon_afternoon" fitHeight="101.0" fitWidth="96.0" layoutX="209.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="day_icon_evening" fitHeight="101.0" fitWidth="96.0" layoutX="300.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
-      <AnchorPane fx:id="settingsPage" layoutX="14.0" layoutY="76.0" prefHeight="402.0" prefWidth="372.0" style="-fx-background-color: #f4c741;" visible="false">
+      <AnchorPane fx:id="settingsPage" layoutX="14.0" layoutY="76.0" prefHeight="150.0" prefWidth="372.0" style="-fx-background-color: #f4c741;" visible="false">
          <children>
-            <ToggleButton fx:id="isFahrenheit" layoutX="115.0" layoutY="60.0" minWidth="142.0" mnemonicParsing="false" text="Celsius vs Fahrenheit" />
-            <ToggleButton fx:id="colourblind" layoutX="115.0" layoutY="100.0" minWidth="142.0" mnemonicParsing="false" text="Colourblind Mode" />
+            <ToggleButton fx:id="isFahrenheit" layoutX="80.0" layoutY="20.0" minWidth="220.0" mnemonicParsing="false" text="Celsius vs Fahrenheit">
+               <font>
+                  <Font size="20.0" />
+               </font></ToggleButton>
+            <ToggleButton fx:id="colourblind" layoutX="80.0" layoutY="80.0" minWidth="220.0" mnemonicParsing="false" text="Colourblind Mode">
+               <font>
+                  <Font size="20.0" />
+               </font></ToggleButton>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="alarmSettings" layoutX="21.0" layoutY="77.0" prefHeight="124.0" prefWidth="359.0" style="-fx-background-color: #f4c741;" visible="false">
