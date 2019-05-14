@@ -34,10 +34,17 @@ public class MainController {
     @FXML
     private AnchorPane alarmSettings;
 
-
     @FXML
     private ImageView Day_Icon_Early;
 
+    @FXML
+    private ImageView Day_Icon_Morning;
+
+    @FXML
+    private ImageView Day_Icon_Afternoon;
+
+    @FXML
+    private ImageView Day_Icon_Evening;
 
     private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
 
@@ -66,12 +73,15 @@ public class MainController {
        Date Current_BreakDown_Day = new Date();//automatically set to current system date on ini
 
 
+        
         //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°C");
         } else {
             info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
         }
+
+
 
         try {
             setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
