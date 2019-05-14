@@ -69,13 +69,12 @@ public class MainController {
     }
 
     @FXML
-    private void initialize() throws FileNotFoundException{
+    private void initialize() throws FileNotFoundException {
         //This will get the temperature from the weather API and the feels like and display it in the info text
 
         double feelsLike = CityDataFinder.getFeelsLikeTemperature(weather);
 
         double actual = CityDataFinder.getTemperature(weather);
-
 
 
         int roundedFL = (int) Math.round(feelsLike);
@@ -85,8 +84,7 @@ public class MainController {
 
         ForecastInfo = new CityDataFinder("Cambridge, UK");
 
-
-
+        UpdateForecastBreakdown();
 
 
         //DailyBreakdown_Icons[0] = Day_Icon_Early;
@@ -95,7 +93,6 @@ public class MainController {
         } else {
             info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
         }
-
 
 
         try {
@@ -113,35 +110,32 @@ public class MainController {
 
         //The following gives the unit converter button an event handler to change units
         isFahrenheit.setOnAction((e -> {
-                if (!isFahrenheit.isSelected()){
-                    if (roundedActual == roundedFL) {
-                        info.setText(roundedFL + "°C");
-                    } else {
-                        info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
-                    }
+            if (!isFahrenheit.isSelected()) {
+                if (roundedActual == roundedFL) {
+                    info.setText(roundedFL + "°C");
+                } else {
+                    info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
                 }
-                else {
-                    int fl = freedomUnitsConverter(CityDataFinder.getFeelsLikeTemperature(weather));
-                    int act = freedomUnitsConverter(CityDataFinder.getTemperature(weather));
+            } else {
+                int fl = freedomUnitsConverter(CityDataFinder.getFeelsLikeTemperature(weather));
+                int act = freedomUnitsConverter(CityDataFinder.getTemperature(weather));
 
-                    if (fl == act) {
-                        info.setText(fl + "°F");
-                    } else {
-                        info.setText(fl + "°F" + "\nActually: " + act + "°F");
-                    }
+                if (fl == act) {
+                    info.setText(fl + "°F");
+                } else {
+                    info.setText(fl + "°F" + "\nActually: " + act + "°F");
                 }
             }
+        }
         ));
         colourblind.setOnAction((e -> {
             if (colourblind.isSelected()) {
                 try {
                     colourblindText.setText(FlagGetter.getFlagColor());
-                }
-                catch(IOException ioe){
+                } catch (IOException ioe) {
                     System.out.println("Couldn't get flag colour");
                 }
-            }
-            else{
+            } else {
                 colourblindText.setText("");
             }
         }
