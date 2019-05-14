@@ -28,6 +28,12 @@ public class MainController {
     private ToggleButton isFahrenheit;
 
     @FXML
+    private ToggleButton colourblind;
+
+    @FXML
+    private Text colourblindText;
+
+    @FXML
     private AnchorPane settingsPage;
 
     @FXML
@@ -94,6 +100,20 @@ public class MainController {
                     }
                 }
             }
+        ));
+        colourblind.setOnAction((e -> {
+            if (colourblind.isSelected()) {
+                try {
+                    colourblindText.setText(FlagGetter.getFlagColor());
+                }
+                catch(IOException ioe){
+                    System.out.println("Couldn't get flag colour");
+                }
+            }
+            else{
+                colourblindText.setText("");
+            }
+        }
         ));
     }
 
