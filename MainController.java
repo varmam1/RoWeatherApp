@@ -52,6 +52,15 @@ public class MainController {
     @FXML
     private ImageView Day_Icon_Evening; //Evening weather icon for a day
 
+    @FXML
+    private Text em_wind;
+    @FXML
+    private Text m_wind;
+    @FXML
+    private Text a_wind;
+    @FXML
+    private Text e_wind;
+
     private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
 
     private CityDataFinder ForecastInfo;
@@ -139,9 +148,7 @@ public class MainController {
             }
         }
         ));
-
     }
-
 
     // This will show the settings page or take it away depending on if it is there as well as if the alarm page is there
     @FXML
@@ -191,6 +198,11 @@ public class MainController {
         Map<String,Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
         Map<String,Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
         Map<String,Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+
+        em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast)+ " m/s");
+        m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast)+ " m/s");
+        a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast)+ " m/s");
+        e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast)+ " m/s");
 
         setWeatherPicture(Day_Icon_Early,CityDataFinder.getWeatherType(Early_Day_Forecast));
         setWeatherPicture(Day_Icon_Morning,CityDataFinder.getWeatherType(Morning_Day_Forecast));
