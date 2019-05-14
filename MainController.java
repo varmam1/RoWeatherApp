@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 public class MainController {
@@ -33,6 +34,20 @@ public class MainController {
     @FXML
     private AnchorPane alarmSettings;
 
+    @FXML
+    private ImageView Day_Icon_Early;
+
+    @FXML
+    private ImageView Day_Icon_Morning;
+
+    @FXML
+    private ImageView Day_Icon_Afternoon;
+
+    @FXML
+    private ImageView Day_Icon_Evening;
+
+    private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
+
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius){
         return (int)Math.round((1.8*celsius) + 32);
@@ -50,16 +65,28 @@ public class MainController {
         //This will get the temperature from the weather API and the feels like and display it in the info text
 
         double feelsLike = CityDataFinder.getFeelsLikeTemperature(weather);
+
         double actual = CityDataFinder.getTemperature(weather);
+
+
 
         int roundedFL = (int) Math.round(feelsLike);
         int roundedActual = (int) Math.round(actual);
 
+       Date Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+        CityDataFinder CamWeather = new CityDataFinder("Cambridge, UK");
+
+
+
+        Day_Icon_Early = CamWeather
+        //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°C");
         } else {
             info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
         }
+
+
 
         try {
             setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));

@@ -14,6 +14,9 @@ public class CityDataFinder {
     private static final String APIKEY = "e63d6d93d6cba955e0c5a04fe508c08f";
     private Map<String, Double> cityDataForParticularDT = null;
     private TreeMap<Long, Map<String, Double>> cityDataForTheWholeDay;
+
+
+
     private final static String[] numbersToDescriptionsMapping = {"Clouds", "Snow", "Extreme", "Clear", "Rain", "Thunderstorm", "Haze", "Drizzle", "Mist", "Dust", "Fog"};
     public CityDataFinder(String cityName) {
         //fetches data for a particular city
