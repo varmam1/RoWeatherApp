@@ -1,4 +1,3 @@
-package RoWeatherApp;
 import javax.sound.sampled.*;
 import java.applet.*;
 import java.io.File;
@@ -7,20 +6,20 @@ import java.net.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class SoundPlayer {
-    public SoundPlayer() {}
+public class AlarmPlayer {
+    public AlarmPlayer() {}
     private static Clip clip;
     public static void playAlarm() {
         Line.Info linfo = new Line.Info(Clip.class);
         Line line = null;
         try {
             line = AudioSystem.getLine(linfo);
-            AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/RoWeatherApp/alarm.wav"));
+            AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./alarm.wav"));
             clip = (Clip) line;
             clip.open(ais);
             clip.start();
-            //stops after 10 seconds
-            Thread.sleep(0);
+            //stops after 0 seconds
+            Thread.sleep(10000);
             //clip.stop();
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
@@ -35,5 +34,6 @@ public class SoundPlayer {
 
     public static void main(String[] args) {
         playAlarm();
+        stopAlarm();
     }
 }
