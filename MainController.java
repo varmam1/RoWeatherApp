@@ -54,6 +54,8 @@ public class MainController {
 
     private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
 
+    private CityDataFinder ForecastInfo;
+
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius){
         return (int)Math.round((1.8*celsius) + 32);
@@ -67,7 +69,7 @@ public class MainController {
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() throws FileNotFoundException{
         //This will get the temperature from the weather API and the feels like and display it in the info text
 
         double feelsLike = CityDataFinder.getFeelsLikeTemperature(weather);
@@ -79,12 +81,14 @@ public class MainController {
         int roundedFL = (int) Math.round(feelsLike);
         int roundedActual = (int) Math.round(actual);
 
-       Date Current_BreakDown_Day = new Date();//automatically set to current system date on ini
-        CityDataFinder CamWeather = new CityDataFinder("Cambridge, UK");
+        Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+
+        ForecastInfo = new CityDataFinder("Cambridge, UK");
 
 
 
-        Day_Icon_Early = CamWeather
+
+
         //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°C");
@@ -164,5 +168,33 @@ public class MainController {
         else {
             alarmSettings.setVisible(!alarmSettings.isVisible());
         }
+    }
+
+    public long getTimeForDayPoint(Date GivenDate, int hour){
+        Date ToUpdate = (Date)GivenDate.clone();
+        ToUpdate.setHours(hour);
+        ToUpdate.setMinutes(0);
+        ToUpdate.setSeconds(0);
+        return ToUpdate.getTime();
+    }
+
+    public long getTimeForDayPoint( int hour){
+        Date ToUpdate = (Date)Current_BreakDown_Day.clone();
+        ToUpdate.setHours(hour);
+        ToUpdate.setMinutes(0);
+        ToUpdate.setSeconds(0);
+        return ToUpdate.getTime();
+    }
+
+    private void UpdateForecastBreakdown ()throws FileNotFoundException{//Assumes an updated date to base the update off of.
+        Map<String,Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        Map<String,Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        Map<String,Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        Map<String,Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+
+        setWeatherPicture(Day_Icon_Early,CityDataFinder.getWeatherType(Early_Day_Forecast));
+        setWeatherPicture(Day_Icon_Morning,CityDataFinder.getWeatherType(Morning_Day_Forecast));
+        setWeatherPicture(Day_Icon_Afternoon,CityDataFinder.getWeatherType(Afternoon_Forecast));
+        setWeatherPicture(Day_Icon_Evening,CityDataFinder.getWeatherType(Eve_Day_Forecast));
     }
 }
