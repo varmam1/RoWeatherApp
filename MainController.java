@@ -239,7 +239,6 @@ public class MainController {
                 alarmPlayer.stop();
             }
         }));
-
     }
 
     // This will show the settings page or take it away depending on if it is there as well as if the alarm page is there
