@@ -56,7 +56,7 @@ public class MainController {
     @FXML
     private Text DayText;
 
-    private String CurrentDay;
+    private integer DaysAhead;
 
     @FXML
     private Text em_wind;
@@ -255,18 +255,40 @@ public class MainController {
     }
 
 
-    public void Increment_Breakdown_Day(){
+    public void Increment_Breakdown_Day() throws DateOutOfRangeException{
         //on pressing the button to increase the day
+        if(DaysAhead >= 4){
+            throw new DateOutOfRangeException("Incremented past available range");
+        }
         Current_BreakDown_Day = addDays(Current_BreakDown_Day,1);
-        if(CurrentDay == "Today"){
-            CurrentDay = "Tomorrow";
+        DaysAhead +=1;
+        if(DaysAhead == 1){
+            DayText.SetText("Tomorrow");
+            // DECR Button.visible SET TO TRUE HERE
         }
         else{
-            //CurrentDay =
+            DayText.SetText(Current_BreakDown_Day.ToString());
         }
-        DayText.setText(CurrentDay);
+    }
 
-//        if(Current_BreakDown_Day.Date == new Date().Date);
+    public void Decrement_Breakdown_Day() throws DateOutOfRangeException{
+        if(DaysAhead == 0){
+            throw new DateOutOfRangeException("Decrementing past available range.");
+        }
+        Current_BreakDown_Day = addDays(Current_BreakDown_Day,-1);
+        DaysAhead-=1;
+        if(){
+            CurrentDay = "Today";
+            // DECR Button.visible SET TO FALSE HERE
+        }
+        else{
+            if(Current_BreakDown_Day.Date == AddDays(new Date(),1)){//if the date has now rolled back to being the day after today...
+                DayText.SetText("Tomorrow");
+            }
+            else{
+                DayText.SrtText( Current_BreakDown_Day.ToString());
+            }
+        }
     }
 
 
