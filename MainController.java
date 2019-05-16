@@ -82,6 +82,8 @@ public class MainController {
 
     private String flagColour; //Stores the current flag colour so that it doesn't need to be queried again when setting to colourblind mode
 
+    private Timeline alarm;
+
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius) {
         return (int) Math.round((1.8 * celsius) + 32);
@@ -182,9 +184,6 @@ public class MainController {
         mins.getItems().addAll(minutesValues);
         hours.getItems().addAll(hourValues);
 
-        var ref = new Object() {
-            Timeline alarm = null;
-        };
 
         onOff.setOnAction((event -> {
             if (onOff.isSelected()) {
@@ -211,15 +210,15 @@ public class MainController {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    ref.alarm = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
+                    alarm = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
                         AlarmPlayer.playAlarm(); //TODO: While playing, can't do anything else until the last few seconds of the alarm
                     })));
-                    ref.alarm.play();
+                    alarm.play();
                 }
             } else {
                 onOff.setText("Turn On");
                 alarmTime.setText("OFF");
-                ref.alarm.stop();
+                alarm.stop();
             }
         }));
 
@@ -267,7 +266,7 @@ public class MainController {
         }
         DayText.setText(CurrentDay);
 
-        if(Current_BreakDown_Day.Date == new Date().Date);
+//        if(Current_BreakDown_Day.Date == new Date().Date);
     }
 
 
@@ -295,9 +294,9 @@ public class MainController {
     //Updates forecast at the bottom of the screen
     private void UpdateForecastBreakdown() throws FileNotFoundException { //Assumes an updated date to base the update off of.
         Map<String, Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
-        Map<String, Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
-        Map<String, Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
-        Map<String, Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        Map<String, Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(10));
+        Map<String, Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(13));
+        Map<String, Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(16));
 
         em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
         m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
