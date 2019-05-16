@@ -285,7 +285,9 @@ public class MainController {
             if (DaysAhead == 1) {
                 DayText.setText("Tomorrow");
                 LArrow.setVisible(true);
-            } else if (DaysAhead == maxDaysAhead) {
+            } else if (DaysAhead >= maxDaysAhead) {
+                DaysAhead = MaxDaysAhead;
+                Current_BreakDown_Day = addDays(new Date(),MaxDaysAhead);
                 RArrow.setVisible(false);
                 DayText.setText(parseDate(Current_BreakDown_Day));
             } else {
@@ -304,6 +306,7 @@ public class MainController {
             DaysAhead -= 1;
             if (DaysAhead <= 0) {
                 DaysAhead=0;
+                Current_BreakDown_Day = new Date();
                 DayText.setText("Today");
                 LArrow.setVisible(false);
             } else if (DaysAhead == maxDaysAhead - 1) {
