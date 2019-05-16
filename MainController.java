@@ -1,5 +1,6 @@
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MainController {
     private Map<String, Double> weather = CityDataFinder.getCurrentWeather("Cambridge,UK");
@@ -61,6 +64,11 @@ public class MainController {
     @FXML
     private Text e_wind;
 
+    @FXML
+    private ComboBox mins;
+    @FXML
+    private ComboBox hours;
+
     private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
 
     private CityDataFinder ForecastInfo;
@@ -99,7 +107,6 @@ public class MainController {
         ForecastInfo = new CityDataFinder("Cambridge, UK");
         UpdateForecastBreakdown();
 
-
         try {
             //This will set the weather for the current time
             setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
@@ -122,6 +129,8 @@ public class MainController {
                 } else {
                     info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
                 }
+
+                isFahrenheit.setText("Switch to Fahrenheit");
             } else {
                 int fl = freedomUnitsConverter(CityDataFinder.getFeelsLikeTemperature(weather));
                 int act = freedomUnitsConverter(CityDataFinder.getTemperature(weather));
@@ -131,6 +140,7 @@ public class MainController {
                 } else {
                     info.setText(fl + "°F" + "\nActually: " + act + "°F");
                 }
+                isFahrenheit.setText("Switch to Celsius");
             }
         }
         ));
@@ -148,6 +158,10 @@ public class MainController {
             }
         }
         ));
+
+        mins.getItems().addAll(IntStream.rangeClosed(0, 59).boxed().collect(Collectors.toList()));
+        hours.getItems().addAll(IntStream.rangeClosed(0, 23).boxed().collect(Collectors.toList()));
+
     }
 
     // This will show the settings page or take it away depending on if it is there as well as if the alarm page is there

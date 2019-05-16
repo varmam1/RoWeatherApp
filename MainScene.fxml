@@ -9,6 +9,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.Integer?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <children>
       <ImageView fx:id="background" fitHeight="706.0" fitWidth="425.0" layoutX="-11.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
@@ -41,7 +43,7 @@
       <ImageView fx:id="Day_Icon_Evening" fitHeight="101.0" fitWidth="96.0" layoutX="300.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
       <AnchorPane fx:id="settingsPage" layoutX="14.0" layoutY="76.0" prefHeight="150.0" prefWidth="372.0" style="-fx-background-color: #f4c741;" visible="false">
          <children>
-            <ToggleButton fx:id="isFahrenheit" layoutX="80.0" layoutY="20.0" minWidth="220.0" mnemonicParsing="false" text="Celsius vs Fahrenheit">
+            <ToggleButton fx:id="isFahrenheit" layoutX="80.0" layoutY="20.0" minWidth="220.0" mnemonicParsing="false" text="Switch to Fahrenheit">
                <font>
                   <Font size="20.0" />
                </font></ToggleButton>
@@ -55,7 +57,7 @@
          <children>
             <ToggleButton layoutX="278.0" layoutY="46.0" mnemonicParsing="false" text="ON" />
             <ComboBox fx:id="mins" accessibleRole="DATE_PICKER" editable="true" layoutX="84.0" layoutY="46.0" prefHeight="32.0" prefWidth="96.0" promptText="Mins" />
-            <ComboBox fx:id="mins1" accessibleRole="DATE_PICKER" editable="true" layoutX="15.0" layoutY="46.0" prefHeight="32.0" prefWidth="69.0" promptText="Hour" />
+            <ComboBox fx:id="hours" accessibleRole="DATE_PICKER" editable="true" layoutX="15.0" layoutY="46.0" prefHeight="32.0" prefWidth="69.0" promptText="Hour" />
          </children>
       </AnchorPane>
    </children>
