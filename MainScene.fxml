@@ -48,11 +48,11 @@
                </font></ToggleButton>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="alarmSettings" layoutX="21.0" layoutY="77.0" prefHeight="124.0" prefWidth="359.0" style="-fx-background-color: #f4c741;" visible="false">
+      <AnchorPane fx:id="alarmSettings" layoutX="14.0" layoutY="76.0" prefHeight="150.0" prefWidth="372.0" style="-fx-background-color: #f4c741;" visible="false">
          <children>
-            <ToggleButton fx:id="onOff" layoutX="278.0" layoutY="46.0" mnemonicParsing="false" text="Turn On" />
-            <ComboBox fx:id="mins" accessibleRole="DATE_PICKER" editable="true" layoutX="84.0" layoutY="46.0" prefHeight="32.0" prefWidth="96.0" promptText="Mins" />
-            <ComboBox fx:id="hours" accessibleRole="DATE_PICKER" editable="true" layoutX="15.0" layoutY="46.0" prefHeight="32.0" prefWidth="69.0" promptText="Hour" />
+            <ToggleButton fx:id="onOff" layoutX="278.0" layoutY="57.0" mnemonicParsing="false" prefHeight="32.0" text="Turn On" />
+            <ComboBox fx:id="mins" accessibleRole="DATE_PICKER" editable="true" layoutX="84.0" layoutY="57.0" prefHeight="32.0" prefWidth="96.0" promptText="Mins" />
+            <ComboBox fx:id="hours" accessibleRole="DATE_PICKER" editable="true" layoutX="15.0" layoutY="57.0" prefHeight="32.0" prefWidth="69.0" promptText="Hour" />
          </children>
       </AnchorPane>
       <ImageView fx:id="alarm" fitHeight="44.0" fitWidth="54.0" layoutX="82.0" layoutY="18.0" onMouseClicked="#showAlarmSettings" pickOnBounds="true" preserveRatio="true">
