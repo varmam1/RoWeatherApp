@@ -22,7 +22,7 @@
             <Font size="30.0" />
          </font></Text>
       <Text fx:id="info" layoutX="144.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24; -fx-font-family: 'Arial' ;" text="This should be where temperature, feels like and wind is" wrappingWidth="142.74609375" />
-      <Text fx:id="alarmTime" layoutX="153.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFF" wrappingWidth="142.74609375" />
+      <Text fx:id="alarmTime" layoutX="155.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFF" wrappingWidth="142.74609375" />
       <Text fx:id="DayText" layoutX="41.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TODAY/TOMORROW/ETC" wrappingWidth="160.74609375" />
       <Text layoutX="26.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Early Morning" wrappingWidth="95.99999511241913" />
       <Text layoutX="136.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Morning" wrappingWidth="53.99999761581421" />
@@ -48,11 +48,11 @@
                </font></ToggleButton>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="alarmSettings" layoutX="21.0" layoutY="77.0" prefHeight="124.0" prefWidth="359.0" style="-fx-background-color: #f4c741;" visible="false">
+      <AnchorPane fx:id="alarmSettings" layoutX="14.0" layoutY="76.0" prefHeight="150.0" prefWidth="372.0" style="-fx-background-color: #f4c741;" visible="false">
          <children>
-            <ToggleButton fx:id="onOff" layoutX="278.0" layoutY="46.0" mnemonicParsing="false" text="Turn On" />
-            <ComboBox fx:id="mins" accessibleRole="DATE_PICKER" editable="true" layoutX="84.0" layoutY="46.0" prefHeight="32.0" prefWidth="96.0" promptText="Mins" />
-            <ComboBox fx:id="hours" accessibleRole="DATE_PICKER" editable="true" layoutX="15.0" layoutY="46.0" prefHeight="32.0" prefWidth="69.0" promptText="Hour" />
+            <ToggleButton fx:id="onOff" layoutX="278.0" layoutY="57.0" mnemonicParsing="false" prefHeight="32.0" text="Turn On" />
+            <ComboBox fx:id="mins" accessibleRole="DATE_PICKER" editable="true" layoutX="84.0" layoutY="57.0" prefHeight="32.0" prefWidth="96.0" promptText="Mins" />
+            <ComboBox fx:id="hours" accessibleRole="DATE_PICKER" editable="true" layoutX="15.0" layoutY="57.0" prefHeight="32.0" prefWidth="69.0" promptText="Hour" />
          </children>
       </AnchorPane>
       <ImageView fx:id="alarm" fitHeight="44.0" fitWidth="54.0" layoutX="82.0" layoutY="18.0" onMouseClicked="#showAlarmSettings" pickOnBounds="true" preserveRatio="true">

@@ -82,7 +82,7 @@ public class MainController {
 
     private String flagColour; //Stores the current flag colour so that it doesn't need to be queried again when setting to colourblind mode
 
-    private Timeline alarm;
+    private Timeline alarmPlayer;
 
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius) {
@@ -194,7 +194,7 @@ public class MainController {
                     onOff.setSelected(false);
                 } else {
                     onOff.setText("Turn Off");
-                    alarmTime.setText(hour + ":" + min + " - ON");
+                    alarmTime.setText(hour + ":" + min);
                     DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
                     Calendar cal = Calendar.getInstance();
                     String now = dateFormat.format(cal.getTime());
@@ -210,15 +210,15 @@ public class MainController {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    alarm = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
+                    alarmPlayer = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
                         AlarmPlayer.playAlarm(); //TODO: While playing, can't do anything else until the last few seconds of the alarm
                     })));
-                    alarm.play();
+                    alarmPlayer.play();
                 }
             } else {
                 onOff.setText("Turn On");
                 alarmTime.setText("OFF");
-                alarm.stop();
+                alarmPlayer.stop();
             }
         }));
 
