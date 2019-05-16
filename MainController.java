@@ -75,6 +75,8 @@ public class MainController {
 
     private CityDataFinder ForecastInfo;
 
+    private String flagColour; //Stores the current flag colour so that it doesn't need to be queried again when setting to colourblind mode
+
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius) {
         return (int) Math.round((1.8 * celsius) + 32);
@@ -114,7 +116,8 @@ public class MainController {
             setWeatherPicture(weatherIcon, CityDataFinder.getWeatherType(weather));
 
             //This should take the flag and display the correct one
-            FileInputStream input = new FileInputStream(FlagGetter.getFlagColor() + " Flag.png");
+            flagColour = FlagGetter.getFlagColor();
+            FileInputStream input = new FileInputStream(flagColour + " Flag.png");
             Image image = new Image(input);
             flagPic.setImage(image);
 //            flagPic.addEventHandler(MouseEvent.MOUSE_CLICKED, this::showAlarmSettings);
@@ -150,11 +153,7 @@ public class MainController {
         //The following gives the colorblind button the event handler to say what the flag is or not
         colourblind.setOnAction((e -> {
             if (colourblind.isSelected()) {
-                try {
-                    colourblindText.setText(FlagGetter.getFlagColor());
-                } catch (IOException ioe) {
-                    System.out.println("Couldn't get flag colour");
-                }
+                colourblindText.setText(flagColour);
             } else {
                 colourblindText.setText("");
             }
