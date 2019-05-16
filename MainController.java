@@ -177,6 +177,10 @@ public class MainController {
         mins.getItems().addAll(minutesValues);
         hours.getItems().addAll(hourValues);
 
+        var ref = new Object() {
+            Timeline alarm = null;
+        };
+
         onOff.setOnAction((event -> {
             if (onOff.isSelected()) {
                 String min = (mins.getValue() != null) ? (String) mins.getValue() : "";
@@ -199,19 +203,18 @@ public class MainController {
                             difference = oneDay + difference;
                         }
                         difference = difference/1000;
-                        System.out.println(difference);
-
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    Timeline alarm = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
+                    ref.alarm = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
                         AlarmPlayer.playAlarm(); //TODO: While playing, can't do anything else until the last few seconds of the alarm
                     })));
-                    alarm.play();
+                    ref.alarm.play();
                 }
             } else {
                 onOff.setText("Turn On");
                 alarmTime.setText("OFF");
+                ref.alarm.stop();
             }
         }));
 
