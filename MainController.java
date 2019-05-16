@@ -199,10 +199,17 @@ public class MainController {
                     long difference = 0;
                     try {
                         difference = dateFormat.parse(then).getTime() - dateFormat.parse(now).getTime();
+                        if (difference < 0){
+                            long oneDay = 24 * 60 * 60 * 1000;
+                            difference = oneDay + difference;
+                        }
+                        difference = difference/1000;
+                        System.out.println(difference);
+
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    Timeline alarm = new Timeline(new KeyFrame(Duration.seconds(difference/1000), (e -> {
+                    Timeline alarm = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
                         AlarmPlayer.playAlarm(); //TODO: While playing, can't do anything else until the last few seconds of the alarm
                     })));
                     alarm.play();
