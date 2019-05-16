@@ -291,6 +291,7 @@ public class MainController {
         else{
             DayText.setText(Current_BreakDown_Day.toString());
         }
+        UpdateForecastBreakdown();
     }
 
     public void Decrement_Breakdown_Day() throws DateOutOfRangeException{
@@ -315,6 +316,7 @@ public class MainController {
                 DayText.setText( Current_BreakDown_Day.toString());
             }
         }
+        UpdateForecastBreakdown();
     }
 
     public long getTimeForDayPoint(Date GivenDate, int hour) {
