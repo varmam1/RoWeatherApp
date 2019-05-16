@@ -314,17 +314,40 @@ public class MainController {
     private void UpdateForecastBreakdown() throws FileNotFoundException { //Assumes an updated date to base the update off of.
         Map<String, Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
         Map<String, Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(10));
-        Map<String, Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(13));
-        Map<String, Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(16));
+        Map<String, Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(14));
+        Map<String, Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(18));
 
-        em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
-        m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
-        a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
-        e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
+        if(DaysAhead == 0){
+            DateFormat dateFormat = new SimpleDateFormat("HH");
+            Calendar cal = Calendar.getInstance();
+            int currentHour = Integer.parseInt(dateFormat.format(cal.getTime()));
+            if (currentHour < 18){
+                setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
+                e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
+            }
+            if (currentHour < 14){
+                setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
+                a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
+            }
+            if (currentHour < 10){
+                setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
+                m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
+            }
+            if (currentHour < 7){
+                setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
+                em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
+            }
+        }
+        else {
+            em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
+            m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
+            a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
+            e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
 
-        setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
-        setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
-        setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
-        setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
+            setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
+            setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
+            setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
+            setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
+        }
     }
 }
