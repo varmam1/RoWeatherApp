@@ -273,7 +273,7 @@ public class MainController {
     }
 
 
-    public void Increment_Breakdown_Day() throws DateOutOfRangeException{
+    public void Increment_Breakdown_Day() throws DateOutOfRangeException, FileNotFoundException {
         //on pressing the button to increase the day
         if(DaysAhead == maxDaysAhead){
             throw new DateOutOfRangeException("Incremented past available range");
@@ -286,8 +286,8 @@ public class MainController {
                 DayText.setText("Tomorrow");
                 LArrow.setVisible(true);
             } else if (DaysAhead >= maxDaysAhead) {
-                DaysAhead = MaxDaysAhead;//in case of button spam, reset this information to protect against future issues
-                Current_BreakDown_Day = addDays(new Date(),MaxDaysAhead);
+                DaysAhead = maxDaysAhead;//in case of button spam, reset this information to protect against future issues
+                Current_BreakDown_Day = addDays(new Date(),maxDaysAhead);
                 RArrow.setVisible(false);
                 DayText.setText(parseDate(Current_BreakDown_Day));
             } else {
@@ -297,7 +297,7 @@ public class MainController {
         }
     }
 
-    public void Decrement_Breakdown_Day() throws DateOutOfRangeException{
+    public void Decrement_Breakdown_Day() throws DateOutOfRangeException, FileNotFoundException {
         // Decrease the day for the weather breakdown by
         if(DaysAhead == 0){
             throw new DateOutOfRangeException("Decrementing past available range.");
