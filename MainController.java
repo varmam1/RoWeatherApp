@@ -90,7 +90,7 @@ public class MainController {
 
     private Timeline alarmPlayer;
 
-    private final int maxDaysAhead = 7; //stores the maximum number of days we want to go ahead
+    private final int maxDaysAhead = 4; //stores the maximum number of days we want to go ahead
 
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius) {
@@ -286,7 +286,7 @@ public class MainController {
                 DayText.setText("Tomorrow");
                 LArrow.setVisible(true);
             } else if (DaysAhead >= maxDaysAhead) {
-                DaysAhead = MaxDaysAhead;
+                DaysAhead = MaxDaysAhead;//in case of button spam, reset this information to protect against future issues
                 Current_BreakDown_Day = addDays(new Date(),MaxDaysAhead);
                 RArrow.setVisible(false);
                 DayText.setText(parseDate(Current_BreakDown_Day));
@@ -298,6 +298,7 @@ public class MainController {
     }
 
     public void Decrement_Breakdown_Day() throws DateOutOfRangeException{
+        // Decrease the day for the weather breakdown by
         if(DaysAhead == 0){
             throw new DateOutOfRangeException("Decrementing past available range.");
         }
@@ -305,7 +306,7 @@ public class MainController {
             Current_BreakDown_Day = addDays(Current_BreakDown_Day, -1);
             DaysAhead -= 1;
             if (DaysAhead <= 0) {
-                DaysAhead=0;
+                DaysAhead=0;//in case of button spam, reset this information to protect against future issues
                 Current_BreakDown_Day = new Date();
                 DayText.setText("Today");
                 LArrow.setVisible(false);
