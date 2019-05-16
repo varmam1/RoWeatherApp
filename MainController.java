@@ -192,17 +192,23 @@ public class MainController {
         mins.getItems().addAll(minutesValues);
         hours.getItems().addAll(hourValues);
 
-
+        //Sets onOff button for alarm to turn on or off the alarm
         onOff.setOnAction((event -> {
             if (onOff.isSelected()) {
+                //If there is something in the inputs, then it'll take it, otherwise empty string
                 String min = (mins.getValue() != null) ? (String) mins.getValue() : "";
                 String hour = (hours.getValue() != null) ? (String) hours.getValue() : "";
+
+                //If the length of the string is not 2 or the input is out of range, then it won't let it work
                 if (min.length() != 2 || hour.length() != 2 ||
                         Integer.parseInt(hour) > 24 || Integer.parseInt(hour) < 0 || Integer.parseInt(min) > 60 || Integer.parseInt(min) < 0) {
                     onOff.setSelected(false);
                 } else {
+                    //Change the text on the button and main screen
                     onOff.setText("Turn Off");
                     alarmTime.setText(hour + ":" + min);
+
+                    //Gets the current time and input time and calculates the difference
                     DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
                     Calendar cal = Calendar.getInstance();
                     String now = dateFormat.format(cal.getTime());
@@ -218,12 +224,15 @@ public class MainController {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+
+                    //Sets a song to play the difference far into the future
                     alarmPlayer = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
-                        AlarmPlayer.playAlarm(); //TODO: While playing, can't do anything else until the last few seconds of the alarm
+                        AlarmPlayer.playAlarm();
                     })));
                     alarmPlayer.play();
                 }
             } else {
+                // If the button is turned off then mark as so and stop the player
                 onOff.setText("Turn On");
                 alarmTime.setText("OFF");
                 alarmPlayer.stop();
