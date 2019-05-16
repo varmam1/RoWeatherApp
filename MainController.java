@@ -1,4 +1,8 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
@@ -7,16 +11,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.*;
 
 public class MainController {
     private Map<String, Double> weather = CityDataFinder.getCurrentWeather("Cambridge,UK");
@@ -192,6 +192,10 @@ public class MainController {
                 else {
                     onOff.setText("Turn Off");
                     alarmTime.setText(hour + ":" + min + " - ON");
+                    Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(5), (e -> {
+                        AlarmPlayer.playAlarm(); //While playing, can't do anything else
+                    })));
+                    fiveSecondsWonder.play();
                 }
             }
             else{
