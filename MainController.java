@@ -276,10 +276,10 @@ public class MainController {
         }
         else if (DaysAhead == maxDaysAhead){
             RArrow.setVisible(false);
-            DayText.setText(Current_BreakDown_Day.toString());
+            DayText.setText(parseDate(Current_BreakDown_Day));
         }
         else{
-            DayText.setText(Current_BreakDown_Day.toString());
+            DayText.setText(parseDate(Current_BreakDown_Day));
         }
     }
 
@@ -295,16 +295,21 @@ public class MainController {
         }
         else if (DaysAhead == maxDaysAhead - 1){
             RArrow.setVisible(true);
-            DayText.setText(Current_BreakDown_Day.toString());
+            DayText.setText(parseDate(Current_BreakDown_Day));
         }
         else{
             if(DaysAhead == 1){//if the date has now rolled back to being the day after today...
                 DayText.setText("Tomorrow");
             }
             else{
-                DayText.setText( Current_BreakDown_Day.toString());
+                DayText.setText( parseDate(Current_BreakDown_Day));
             }
         }
+    }
+
+    private String parseDate(Date day){
+        DateFormat timeFormat = new SimpleDateFormat("dd/MM");
+        return timeFormat.format(day);
     }
 
     public long getTimeForDayPoint(Date GivenDate, int hour) {
