@@ -56,7 +56,7 @@ public class MainController {
     @FXML
     private Text DayText;
 
-    private integer DaysAhead;
+    private int DaysAhead;
 
     @FXML
     private Text em_wind;
@@ -263,11 +263,11 @@ public class MainController {
         Current_BreakDown_Day = addDays(Current_BreakDown_Day,1);
         DaysAhead +=1;
         if(DaysAhead == 1){
-            DayText.SetText("Tomorrow");
+            DayText.setText("Tomorrow");
             // DECR Button.visible SET TO TRUE HERE
         }
         else{
-            DayText.SetText(Current_BreakDown_Day.ToString());
+            DayText.setText(Current_BreakDown_Day.toString());
         }
     }
 
@@ -276,23 +276,20 @@ public class MainController {
             throw new DateOutOfRangeException("Decrementing past available range.");
         }
         Current_BreakDown_Day = addDays(Current_BreakDown_Day,-1);
-        DaysAhead-=1;
-        if(){
-            CurrentDay = "Today";
+        DaysAhead -= 1;
+        if(DaysAhead == 0){
+            DayText.setText("Today");
             // DECR Button.visible SET TO FALSE HERE
         }
         else{
-            if(Current_BreakDown_Day.Date == AddDays(new Date(),1)){//if the date has now rolled back to being the day after today...
-                DayText.SetText("Tomorrow");
+            if(Current_BreakDown_Day == addDays(new Date(),1)){//if the date has now rolled back to being the day after today...
+                DayText.setText("Tomorrow");
             }
             else{
-                DayText.SrtText( Current_BreakDown_Day.ToString());
+                DayText.setText( Current_BreakDown_Day.toString());
             }
         }
     }
-
-
-
 
     public long getTimeForDayPoint(Date GivenDate, int hour) {
         Date ToUpdate = (Date) GivenDate.clone();
