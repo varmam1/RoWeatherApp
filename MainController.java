@@ -1,14 +1,10 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -16,6 +12,9 @@ import javafx.util.Duration;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MainController {
@@ -77,8 +76,8 @@ public class MainController {
     private CityDataFinder ForecastInfo;
 
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
-    private int freedomUnitsConverter(double celsius){
-        return (int)Math.round((1.8*celsius) + 32);
+    private int freedomUnitsConverter(double celsius) {
+        return (int) Math.round((1.8 * celsius) + 32);
     }
 
     // Will set icon to the weatherType image on the condition that the image is the weatherType.png
@@ -164,16 +163,14 @@ public class MainController {
 
         List<String> minutesValues = new ArrayList<>();
         List<String> hourValues = new ArrayList<>();
-        for (int i = 0; i < 59; i++){
-            if (i < 10){
+        for (int i = 0; i < 59; i++) {
+            if (i < 10) {
                 minutesValues.add("0" + i);
                 hourValues.add("0" + i);
-            }
-            else if (i < 24){
+            } else if (i < 24) {
                 minutesValues.add(i + "");
                 hourValues.add(i + "");
-            }
-            else{
+            } else {
                 minutesValues.add(i + "");
             }
         }
@@ -182,23 +179,31 @@ public class MainController {
         hours.getItems().addAll(hourValues);
 
         onOff.setOnAction((event -> {
-            if (onOff.isSelected()){
+            if (onOff.isSelected()) {
                 String min = (mins.getValue() != null) ? (String) mins.getValue() : "";
                 String hour = (hours.getValue() != null) ? (String) hours.getValue() : "";
                 if (min.length() != 2 || hour.length() != 2 ||
-                    Integer.parseInt(hour) > 24 || Integer.parseInt(hour) < 0 || Integer.parseInt(min) > 60 || Integer.parseInt(min) < 0){
+                        Integer.parseInt(hour) > 24 || Integer.parseInt(hour) < 0 || Integer.parseInt(min) > 60 || Integer.parseInt(min) < 0) {
                     onOff.setSelected(false);
-                }
-                else {
+                } else {
                     onOff.setText("Turn Off");
                     alarmTime.setText(hour + ":" + min + " - ON");
-                    Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(5), (e -> {
-                        AlarmPlayer.playAlarm(); //While playing, can't do anything else
+                    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                    Calendar cal = Calendar.getInstance();
+                    String now = dateFormat.format(cal.getTime());
+                    String then = hour + ":" + min + ":00";
+                    long difference = 0;
+                    try {
+                        difference = dateFormat.parse(then).getTime() - dateFormat.parse(now).getTime();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Timeline alarm = new Timeline(new KeyFrame(Duration.seconds(difference/1000), (e -> {
+                        AlarmPlayer.playAlarm(); //TODO: While playing, can't do anything else until the last few seconds of the alarm
                     })));
-                    fiveSecondsWonder.play();
+                    alarm.play();
                 }
-            }
-            else{
+            } else {
                 onOff.setText("Turn On");
                 alarmTime.setText("OFF");
             }
@@ -208,30 +213,28 @@ public class MainController {
 
     // This will show the settings page or take it away depending on if it is there as well as if the alarm page is there
     @FXML
-    public void showSettings(Event event){
-        if (alarmSettings.isVisible()){
+    public void showSettings() {
+        if (alarmSettings.isVisible()) {
             alarmSettings.setVisible(false);
             settingsPage.setVisible(true);
-        }
-        else {
+        } else {
             settingsPage.setVisible(!settingsPage.isVisible());
         }
     }
 
     // Settings page method but for the alarm page
     @FXML
-    public void showAlarmSettings(Event event){
-        if (settingsPage.isVisible()){
+    public void showAlarmSettings() {
+        if (settingsPage.isVisible()) {
             settingsPage.setVisible(false);
             alarmSettings.setVisible(true);
-        }
-        else {
+        } else {
             alarmSettings.setVisible(!alarmSettings.isVisible());
         }
     }
 
-    public long getTimeForDayPoint(Date GivenDate, int hour){
-        Date ToUpdate = (Date)GivenDate.clone();
+    public long getTimeForDayPoint(Date GivenDate, int hour) {
+        Date ToUpdate = (Date) GivenDate.clone();
         ToUpdate.setHours(hour);
         ToUpdate.setMinutes(0);
         ToUpdate.setSeconds(0);
@@ -240,8 +243,8 @@ public class MainController {
 
 
     //Gets the long for an hour of the day
-    public long getTimeForDayPoint(int hour){
-        Date ToUpdate = (Date)Current_BreakDown_Day.clone();
+    public long getTimeForDayPoint(int hour) {
+        Date ToUpdate = (Date) Current_BreakDown_Day.clone();
         ToUpdate.setHours(hour);
         ToUpdate.setMinutes(0);
         ToUpdate.setSeconds(0);
@@ -249,20 +252,20 @@ public class MainController {
     }
 
     //Updates forecast at the bottom of the screen
-    private void UpdateForecastBreakdown() throws FileNotFoundException{ //Assumes an updated date to base the update off of.
-        Map<String,Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
-        Map<String,Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
-        Map<String,Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
-        Map<String,Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+    private void UpdateForecastBreakdown() throws FileNotFoundException { //Assumes an updated date to base the update off of.
+        Map<String, Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        Map<String, Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        Map<String, Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        Map<String, Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
 
-        em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast)+ " m/s");
-        m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast)+ " m/s");
-        a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast)+ " m/s");
-        e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast)+ " m/s");
+        em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
+        m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
+        a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
+        e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
 
-        setWeatherPicture(Day_Icon_Early,CityDataFinder.getWeatherType(Early_Day_Forecast));
-        setWeatherPicture(Day_Icon_Morning,CityDataFinder.getWeatherType(Morning_Day_Forecast));
-        setWeatherPicture(Day_Icon_Afternoon,CityDataFinder.getWeatherType(Afternoon_Forecast));
-        setWeatherPicture(Day_Icon_Evening,CityDataFinder.getWeatherType(Eve_Day_Forecast));
+        setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
+        setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
+        setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
+        setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
     }
 }
