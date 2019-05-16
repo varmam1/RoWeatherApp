@@ -140,7 +140,7 @@ public class MainController {
                 if (fl == act) {
                     info.setText(fl + "°F");
                 } else {
-                    info.setText(fl + "°F" + "\nActually: " + act + "°F");
+                    info.setText(fl + "°F" + "\nActual: " + act + "°F");
                 }
                 isFahrenheit.setText("Switch to Celsius");
             }
