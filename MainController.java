@@ -123,6 +123,7 @@ public class MainController {
 
         //This will set the forecast at the bottom correctly
         Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+        DaysAhead = 0;
         ForecastInfo = new CityDataFinder("Cambridge, UK");
         UpdateForecastBreakdown();
 
