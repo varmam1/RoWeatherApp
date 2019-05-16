@@ -278,45 +278,46 @@ public class MainController {
         if(DaysAhead == maxDaysAhead){
             throw new DateOutOfRangeException("Incremented past available range");
         }
-        Current_BreakDown_Day = addDays(Current_BreakDown_Day,1);
-        DaysAhead +=1;
-        if(DaysAhead == 1){
-            DayText.setText("Tomorrow");
-            LArrow.setVisible(true);
+        else {
+            Current_BreakDown_Day = addDays(Current_BreakDown_Day, 1);
+            DaysAhead += 1;
+
+            if (DaysAhead == 1) {
+                DayText.setText("Tomorrow");
+                LArrow.setVisible(true);
+            } else if (DaysAhead == maxDaysAhead) {
+                RArrow.setVisible(false);
+                DayText.setText(parseDate(Current_BreakDown_Day));
+            } else {
+                DayText.setText(parseDate(Current_BreakDown_Day));
+            }
+            UpdateForecastBreakdown();
         }
-        else if (DaysAhead == maxDaysAhead){
-            RArrow.setVisible(false);
-            DayText.setText(parseDate(Current_BreakDown_Day));
-        }
-        else{
-            DayText.setText(parseDate(Current_BreakDown_Day));
-        }
-        UpdateForecastBreakdown();
     }
 
     public void Decrement_Breakdown_Day() throws DateOutOfRangeException{
         if(DaysAhead == 0){
             throw new DateOutOfRangeException("Decrementing past available range.");
         }
-        Current_BreakDown_Day = addDays(Current_BreakDown_Day,-1);
-        DaysAhead -= 1;
-        if(DaysAhead == 0){
-            DayText.setText("Today");
-            LArrow.setVisible(false);
-        }
-        else if (DaysAhead == maxDaysAhead - 1){
-            RArrow.setVisible(true);
-            DayText.setText(parseDate(Current_BreakDown_Day));
-        }
-        else{
-            if(DaysAhead == 1){//if the date has now rolled back to being the day after today...
-                DayText.setText("Tomorrow");
+        else {
+            Current_BreakDown_Day = addDays(Current_BreakDown_Day, -1);
+            DaysAhead -= 1;
+            if (DaysAhead <= 0) {
+                DaysAhead=0;
+                DayText.setText("Today");
+                LArrow.setVisible(false);
+            } else if (DaysAhead == maxDaysAhead - 1) {
+                RArrow.setVisible(true);
+                DayText.setText(parseDate(Current_BreakDown_Day));
+            } else {
+                if (DaysAhead == 1) {//if the date has now rolled back to being the day after today...
+                    DayText.setText("Tomorrow");
+                } else {
+                    DayText.setText(parseDate(Current_BreakDown_Day));
+                }
             }
-            else{
-                DayText.setText( parseDate(Current_BreakDown_Day));
-            }
+            UpdateForecastBreakdown();
         }
-        UpdateForecastBreakdown();
     }
 
     private String parseDate(Date day){
