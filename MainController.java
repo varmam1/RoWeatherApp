@@ -11,7 +11,9 @@ import javafx.scene.text.Text;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -45,13 +47,10 @@ public class MainController {
 
     @FXML
     private ImageView Day_Icon_Early; //Early morning weather icon for a day
-
     @FXML
     private ImageView Day_Icon_Morning; //Morning weather icon for a day
-
     @FXML
     private ImageView Day_Icon_Afternoon; //Afternoon weather icon for a day
-
     @FXML
     private ImageView Day_Icon_Evening; //Evening weather icon for a day
 
@@ -68,6 +67,10 @@ public class MainController {
     private ComboBox mins;
     @FXML
     private ComboBox hours;
+    @FXML
+    private ToggleButton onOff;
+    @FXML
+    private Text alarmTime;
 
     private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
 
@@ -159,8 +162,43 @@ public class MainController {
         }
         ));
 
-        mins.getItems().addAll(IntStream.rangeClosed(0, 59).boxed().collect(Collectors.toList()));
-        hours.getItems().addAll(IntStream.rangeClosed(0, 23).boxed().collect(Collectors.toList()));
+        List<String> minutesValues = new ArrayList<>();
+        List<String> hourValues = new ArrayList<>();
+        for (int i = 0; i < 59; i++){
+            if (i < 10){
+                minutesValues.add("0" + i);
+                hourValues.add("0" + i);
+            }
+            else if (i < 24){
+                minutesValues.add(i + "");
+                hourValues.add(i + "");
+            }
+            else{
+                minutesValues.add(i + "");
+            }
+        }
+
+        mins.getItems().addAll(minutesValues);
+        hours.getItems().addAll(hourValues);
+
+        onOff.setOnAction((event -> {
+            if (onOff.isSelected()){
+                String min = (mins.getValue() != null) ? (String) mins.getValue() : "";
+                String hour = (hours.getValue() != null) ? (String) hours.getValue() : "";
+                if (min.length() != 2 || hour.length() != 2 ||
+                    Integer.parseInt(hour) > 24 || Integer.parseInt(hour) < 0 || Integer.parseInt(min) > 60 || Integer.parseInt(min) < 0){
+                    onOff.setSelected(false);
+                }
+                else {
+                    onOff.setText("Turn Off");
+                    alarmTime.setText(hour + ":" + min + " - ON");
+                }
+            }
+            else{
+                onOff.setText("Turn On");
+                alarmTime.setText("OFF");
+            }
+        }));
 
     }
 

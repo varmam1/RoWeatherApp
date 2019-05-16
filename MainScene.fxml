@@ -9,8 +9,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.Integer?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <children>
       <ImageView fx:id="background" fitHeight="706.0" fitWidth="425.0" layoutX="-11.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
@@ -27,7 +25,7 @@
       <Button fx:id="settings" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#showSettings" text="Gear" />
       <Button fx:id="alarm" layoutX="87.0" layoutY="14.0" mnemonicParsing="false" onAction="#showAlarmSettings" text="Alarm" />
       <Text fx:id="info" layoutX="144.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24; -fx-font-family: 'Arial' ;" text="This should be where temperature, feels like and wind is" wrappingWidth="142.74609375" />
-      <Text fx:id="alarmTime" layoutX="153.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time - ON/OFF" wrappingWidth="142.74609375" />
+      <Text fx:id="alarmTime" layoutX="153.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFF" wrappingWidth="142.74609375" />
       <Text layoutX="41.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TODAY/TOMORROW/ETC" wrappingWidth="160.74609375" />
       <Text layoutX="26.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Early Morning" wrappingWidth="95.99999511241913" />
       <Text layoutX="136.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Morning" wrappingWidth="53.99999761581421" />
@@ -55,7 +53,7 @@
       </AnchorPane>
       <AnchorPane fx:id="alarmSettings" layoutX="21.0" layoutY="77.0" prefHeight="124.0" prefWidth="359.0" style="-fx-background-color: #f4c741;" visible="false">
          <children>
-            <ToggleButton layoutX="278.0" layoutY="46.0" mnemonicParsing="false" text="ON" />
+            <ToggleButton fx:id="onOff" layoutX="278.0" layoutY="46.0" mnemonicParsing="false" text="Turn On" />
             <ComboBox fx:id="mins" accessibleRole="DATE_PICKER" editable="true" layoutX="84.0" layoutY="46.0" prefHeight="32.0" prefWidth="96.0" promptText="Mins" />
             <ComboBox fx:id="hours" accessibleRole="DATE_PICKER" editable="true" layoutX="15.0" layoutY="46.0" prefHeight="32.0" prefWidth="69.0" promptText="Hour" />
          </children>
