@@ -13,7 +13,7 @@ public class BasicJavaFX extends Application {
         // The following code loads in an FXML doc:
 
         AnchorPane root = FXMLLoader.load(getClass().getResource("MainScene.fxml"));
-        Scene scene = new Scene(root, 400, 700);
+        Scene scene = new Scene(root, 397, 700);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
