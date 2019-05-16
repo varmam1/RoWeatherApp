@@ -1,10 +1,7 @@
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -146,15 +143,15 @@ public class CityDataFinder {
     }
 
     public Map<String, Double> todayForecastInTimeT(long time) {
-        //Input: time of the day for which we would like to get the data
-
+        //Input: time of the day for which we would like to get the data, in SECONDS from the beginning of time
         //returns current weather in the form of Map<String, Double> used for other functions
+
         //Parameters in the map:
         //"temp", "temp_min", "deg" (wind direction), "pressure", "temp_max", "speed" (wind speed)
         //Strongly advised to use CityDataFinder functions to extract a certain weather feature,
         //because by default some of these might be returned in counterintuitive units
-        if (cityDataForTheWholeDay.higherEntry(time) == null) return cityDataForTheWholeDay.pollLastEntry().getValue();
-        return new TreeMap<String, Double>(cityDataForTheWholeDay.higherEntry(time).getValue());
+        if (cityDataForTheWholeDay.higherEntry(time - 1) == null) return cityDataForTheWholeDay.lastEntry().getValue();
+        return new TreeMap<String, Double>(cityDataForTheWholeDay.higherEntry(time - 1).getValue());
     }
 
     public static String getWeatherType(Map <String, Double> data) {
@@ -183,9 +180,24 @@ public class CityDataFinder {
         return 13.12 + 0.6215 * T - 11.37*Math.pow(V, 0.16) + 0.3965 * T * Math.pow(V, 0.16);
     }
 
-    public static void main(String[] args) {
-        CityDataFinder df = new CityDataFinder("Cambridge");
-        //System.out.println(CityDataFinder.getCurrentWeather(""));
-        System.out.println(getWeatherType(getCurrentWeather("Cambridge")));
+    // USED FOR TESTING
+    /*private static Date Current_BreakDown_Day;
+    //Gets the long for an hour of the day
+    private static long getTimeForDayPoint(int hour) {
+        Date ToUpdate = (Date) Current_BreakDown_Day.clone();
+        ToUpdate.setHours(hour);
+        ToUpdate.setMinutes(0);
+        ToUpdate.setSeconds(0);
+        return ToUpdate.getTime() / 1000L;
     }
+
+
+    public static void main(String[] args) {
+        Current_BreakDown_Day = new Date();//automatically set to current system date on ini
+        CityDataFinder ForecastInfo = new CityDataFinder("Cambridge");
+        //System.out.println(CityDataFinder.getCurrentWeather(""));
+        //System.out.println(getWeatherType(getCurrentWeather("Cambridge")));
+        Map<String, Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
+        System.out.println(Early_Day_Forecast);
+    }*/
 }
