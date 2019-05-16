@@ -21,6 +21,12 @@ public class MainController {
     private Map<String, Double> weather = CityDataFinder.getCurrentWeather("Cambridge,UK");
 
     @FXML
+    private ImageView LArrow; //left arrow to change the current day
+
+    @FXML
+    private ImageView RArrow; //right arrow to change the current day
+
+    @FXML
     private Text info; //Temperature info text
 
     @FXML
@@ -83,6 +89,8 @@ public class MainController {
     private String flagColour; //Stores the current flag colour so that it doesn't need to be queried again when setting to colourblind mode
 
     private Timeline alarmPlayer;
+
+    private final int maxDaysAhead = 7; //stores the maximum number of days we want to go ahead
 
     //Will convert from science units to freedom units (Celsius to Fahrenheit)
     private int freedomUnitsConverter(double celsius) {
@@ -257,14 +265,18 @@ public class MainController {
 
     public void Increment_Breakdown_Day() throws DateOutOfRangeException{
         //on pressing the button to increase the day
-        if(DaysAhead >= 4){
+        if(DaysAhead == maxDaysAhead){
             throw new DateOutOfRangeException("Incremented past available range");
         }
         Current_BreakDown_Day = addDays(Current_BreakDown_Day,1);
         DaysAhead +=1;
         if(DaysAhead == 1){
             DayText.setText("Tomorrow");
-            // DECR Button.visible SET TO TRUE HERE
+            LArrow.setVisible(true);
+        }
+        else if (DaysAhead == maxDaysAhead){
+            RArrow.setVisible(false);
+            DayText.setText(Current_BreakDown_Day.toString());
         }
         else{
             DayText.setText(Current_BreakDown_Day.toString());
@@ -279,10 +291,14 @@ public class MainController {
         DaysAhead -= 1;
         if(DaysAhead == 0){
             DayText.setText("Today");
-            // DECR Button.visible SET TO FALSE HERE
+            LArrow.setVisible(false);
+        }
+        else if (DaysAhead == maxDaysAhead - 1){
+            RArrow.setVisible(true);
+            DayText.setText(Current_BreakDown_Day.toString());
         }
         else{
-            if(Current_BreakDown_Day == addDays(new Date(),1)){//if the date has now rolled back to being the day after today...
+            if(DaysAhead == 1){//if the date has now rolled back to being the day after today...
                 DayText.setText("Tomorrow");
             }
             else{
