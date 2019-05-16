@@ -54,6 +54,11 @@ public class MainController {
     private ImageView Day_Icon_Evening; //Evening weather icon for a day
 
     @FXML
+    private Text DayText;
+
+    private String CurrentDay;
+
+    @FXML
     private Text em_wind;
     @FXML
     private Text m_wind;
@@ -242,6 +247,32 @@ public class MainController {
         }
     }
 
+    public static Date addDays(Date date, int days)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
+    }
+
+
+    public void Increment_Breakdown_Day(){
+        //on pressing the button to increase the day
+        Current_BreakDown_Day = addDays(Current_BreakDown_Day,1);
+        if(CurrentDay == "Today"){
+            CurrentDay = "Tomorrow";
+        }
+        else{
+            //CurrentDay =
+        }
+        DayText.setText(CurrentDay);
+
+        if(Current_BreakDown_Day.Date == new Date().Date);
+    }
+
+
+
+
     public long getTimeForDayPoint(Date GivenDate, int hour) {
         Date ToUpdate = (Date) GivenDate.clone();
         ToUpdate.setHours(hour);
@@ -257,7 +288,8 @@ public class MainController {
         ToUpdate.setHours(hour);
         ToUpdate.setMinutes(0);
         ToUpdate.setSeconds(0);
-        return ToUpdate.getTime();
+        long milli = ToUpdate.getTime();//number of milliseconds since 0:00 Jan 1, 1970
+        return milli/1000;//to give it in seconds instead, for the API.
     }
 
     //Updates forecast at the bottom of the screen
