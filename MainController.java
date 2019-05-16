@@ -194,7 +194,7 @@ public class MainController {
                     onOff.setSelected(false);
                 } else {
                     onOff.setText("Turn Off");
-                    alarmTime.setText(hour + ":" + min + " - ON");
+                    alarmTime.setText(hour + ":" + min);
                     DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
                     Calendar cal = Calendar.getInstance();
                     String now = dateFormat.format(cal.getTime());

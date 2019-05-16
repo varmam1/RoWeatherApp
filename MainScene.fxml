@@ -22,7 +22,7 @@
             <Font size="30.0" />
          </font></Text>
       <Text fx:id="info" layoutX="144.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24; -fx-font-family: 'Arial' ;" text="This should be where temperature, feels like and wind is" wrappingWidth="142.74609375" />
-      <Text fx:id="alarmTime" layoutX="153.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFF" wrappingWidth="142.74609375" />
+      <Text fx:id="alarmTime" layoutX="155.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFF" wrappingWidth="142.74609375" />
       <Text fx:id="DayText" layoutX="41.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TODAY/TOMORROW/ETC" wrappingWidth="160.74609375" />
       <Text layoutX="26.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Early Morning" wrappingWidth="95.99999511241913" />
       <Text layoutX="136.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Morning" wrappingWidth="53.99999761581421" />
