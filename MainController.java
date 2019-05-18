@@ -74,6 +74,15 @@ public class MainController {
     private Text e_wind;
 
     @FXML
+    private Text em_temp;
+    @FXML
+    private Text m_temp;
+    @FXML
+    private Text a_temp;
+    @FXML
+    private Text e_temp;
+
+    @FXML
     private ComboBox mins;
     @FXML
     private ComboBox hours;
@@ -144,6 +153,11 @@ public class MainController {
 
         //The following gives the unit converter button an event handler to change units
         isFahrenheit.setOnAction((e -> {
+            try {
+                UpdateForecastBreakdown();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
             if (!isFahrenheit.isSelected()) {
                 if (roundedActual == roundedFL) {
                     info.setText(roundedFL + "°C");
@@ -356,37 +370,59 @@ public class MainController {
         Map<String, Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(14));
         Map<String, Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(18));
 
-        if(DaysAhead == 0){
+        em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
+        m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
+        a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
+        e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
+
+        double earlyMornTemp = CityDataFinder.getFeelsLikeTemperature(Early_Day_Forecast);
+        double mornTemp = CityDataFinder.getFeelsLikeTemperature(Morning_Day_Forecast);
+        double afterTemp = CityDataFinder.getFeelsLikeTemperature(Afternoon_Forecast);
+        double eveTemp = CityDataFinder.getFeelsLikeTemperature(Eve_Day_Forecast);
+
+        if (isFahrenheit.isSelected()){
+            e_temp.setText(freedomUnitsConverter(eveTemp) + "°F");
+            a_temp.setText(freedomUnitsConverter(afterTemp) + "°F");
+            m_temp.setText(freedomUnitsConverter(mornTemp) + "°F");
+            em_temp.setText(freedomUnitsConverter(earlyMornTemp) + "°F");
+        }
+        else {
+            e_temp.setText(Math.round(eveTemp) + "°C");
+            a_temp.setText(Math.round(afterTemp) + "°C");
+            m_temp.setText(Math.round(mornTemp) + "°C");
+            em_temp.setText(Math.round(earlyMornTemp) + "°C");
+        }
+
+        setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
+        setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
+        setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
+        setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
+
+        if (DaysAhead == 0){
             DateFormat dateFormat = new SimpleDateFormat("HH");
             Calendar cal = Calendar.getInstance();
             int currentHour = Integer.parseInt(dateFormat.format(cal.getTime()));
-            if (currentHour < 18){
-                setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
-                e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
-            }
-            if (currentHour < 14){
-                setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
-                a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
-            }
-            if (currentHour < 10){
-                setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
-                m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
-            }
-            if (currentHour < 7){
-                setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
-                em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
-            }
-        }
-        else {
-            em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
-            m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
-            a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
-            e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
 
-            setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
-            setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
-            setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
-            setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
+            if(currentHour > 7){
+                Day_Icon_Early.setImage(null);
+                em_wind.setText("In the past");
+                em_temp.setText("");
+            }
+            if (currentHour > 10){
+                Day_Icon_Morning.setImage(null);
+                m_wind.setText("In the past");
+                m_temp.setText("");
+            }
+            if (currentHour >14){
+               Day_Icon_Afternoon.setImage(null);
+               a_wind.setText("In the past");
+               a_temp.setText("");
+            }
+            if (currentHour > 18){
+                Day_Icon_Evening.setImage(null);
+                e_wind.setText("In the past");
+                e_temp.setText("");
+            }
         }
     }
 }

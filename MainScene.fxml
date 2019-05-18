@@ -28,14 +28,14 @@
       <Text layoutX="136.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Morning" wrappingWidth="53.99999761581421" />
       <Text layoutX="226.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Afternoon" wrappingWidth="61.999999076128006" />
       <Text layoutX="321.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Evening" wrappingWidth="53.99999761581421" />
-      <ImageView fx:id="Day_Icon_Early" fitHeight="101.0" fitWidth="84.0" layoutX="20.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
-      <Text fx:id="em_wind" layoutX="26.0" layoutY="679.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
-      <Text fx:id="m_wind" layoutX="121.0" layoutY="679.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
-      <Text fx:id="a_wind" layoutX="215.0" layoutY="679.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
-      <Text fx:id="e_wind" layoutX="306.0" layoutY="679.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
-      <ImageView fx:id="Day_Icon_Morning" fitHeight="101.0" fitWidth="84.0" layoutX="115.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="Day_Icon_Afternoon" fitHeight="101.0" fitWidth="84.0" layoutX="209.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="Day_Icon_Evening" fitHeight="101.0" fitWidth="84.0" layoutX="300.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="Day_Icon_Early" fitHeight="92.0" fitWidth="84.0" layoutX="20.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="em_wind" layoutX="21.0" layoutY="686.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
+      <Text fx:id="m_wind" layoutX="121.0" layoutY="686.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
+      <Text fx:id="a_wind" layoutX="215.0" layoutY="685.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
+      <Text fx:id="e_wind" layoutX="306.0" layoutY="685.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In The Past" textAlignment="CENTER" wrappingWidth="83.74609375" />
+      <ImageView fx:id="Day_Icon_Morning" fitHeight="92.0" fitWidth="84.0" layoutX="115.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="Day_Icon_Afternoon" fitHeight="92.0" fitWidth="84.0" layoutX="209.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="Day_Icon_Evening" fitHeight="92.0" fitWidth="84.0" layoutX="300.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" />
       <AnchorPane fx:id="settingsPage" layoutX="14.0" layoutY="76.0" prefHeight="150.0" prefWidth="372.0" style="-fx-background-color: #f4c741;" visible="false">
          <children>
             <ToggleButton fx:id="isFahrenheit" layoutX="80.0" layoutY="20.0" minWidth="220.0" mnemonicParsing="false" text="Switch to Fahrenheit">
@@ -75,5 +75,9 @@
             <Image url="@L_Arrow.png" />
          </image>
       </ImageView>
+      <Text fx:id="em_temp" layoutX="20.0" layoutY="664.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="83.74609375" />
+      <Text fx:id="m_temp" layoutX="115.0" layoutY="663.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="83.74609375" />
+      <Text fx:id="a_temp" layoutX="215.0" layoutY="662.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="83.74609375" />
+      <Text fx:id="e_temp" layoutX="300.0" layoutY="661.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="83.74609375" />
    </children>
 </AnchorPane>
