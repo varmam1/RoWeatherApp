@@ -60,36 +60,36 @@ public class MainController {
     private ImageView Day_Icon_Evening; //Evening weather icon for a day
 
     @FXML
-    private Text DayText;
+    private Text DayText; //The current day in the forecast
 
-    private int DaysAhead;
-
-    @FXML
-    private Text em_wind;
-    @FXML
-    private Text m_wind;
-    @FXML
-    private Text a_wind;
-    @FXML
-    private Text e_wind;
+    private int DaysAhead; //How many days ahead of today it is
 
     @FXML
-    private Text em_temp;
+    private Text em_wind; //The early morning wind speed
     @FXML
-    private Text m_temp;
+    private Text m_wind; //Morning wind speed
     @FXML
-    private Text a_temp;
+    private Text a_wind; //Afternoon wind speed
     @FXML
-    private Text e_temp;
+    private Text e_wind; //Evening wind speed
 
     @FXML
-    private ComboBox mins;
+    private Text em_temp; //Early morning temperature
     @FXML
-    private ComboBox hours;
+    private Text m_temp; //Morning temperature
     @FXML
-    private ToggleButton onOff;
+    private Text a_temp; //Afternoon temperature
     @FXML
-    private Text alarmTime;
+    private Text e_temp; //Evening temperature
+
+    @FXML
+    private ComboBox mins; //Minutes box to get the alarm time
+    @FXML
+    private ComboBox hours; //Hours box to get the alarm time
+    @FXML
+    private ToggleButton onOff; // Button to turn alarm on and off (won't turn on if not a correct time)
+    @FXML
+    private Text alarmTime; // Text to indicate whether alarm is on or not and if it is on, what time its set to
 
     private Date Current_BreakDown_Day; //THIS MUST REFER TO TODAY, OR LESS THAN 1 WEEK INTO THE FUTURE.
 
@@ -97,7 +97,7 @@ public class MainController {
 
     private String flagColour; //Stores the current flag colour so that it doesn't need to be queried again when setting to colourblind mode
 
-    private Timeline alarmPlayer;
+    private Timeline alarmPlayer; //The timeline which can be initialized and stopped later
 
     private final int maxDaysAhead = 4; //stores the maximum number of days we want to go ahead
 
@@ -122,14 +122,12 @@ public class MainController {
         int roundedFL = (int) Math.round(feelsLike);
         int roundedActual = (int) Math.round(actual);
 
-        //DailyBreakdown_Icons[0] = Day_Icon_Early;
         if (roundedActual == roundedFL) {
             info.setText(roundedFL + "°C");
         } else {
             info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
         }
-
-
+        
         //This will set the forecast at the bottom correctly
         Current_BreakDown_Day = new Date();//automatically set to current system date on ini
         DaysAhead = 0;
@@ -145,8 +143,6 @@ public class MainController {
             FileInputStream input = new FileInputStream(flagColour + " Flag.png");
             Image image = new Image(input);
             flagPic.setImage(image);
-//            flagPic.addEventHandler(MouseEvent.MOUSE_CLICKED, this::showAlarmSettings);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,6 +186,7 @@ public class MainController {
         }
         ));
 
+        //This would get all the possible values the hours and minutes could be and make them in a dropdown box
         List<String> minutesValues = new ArrayList<>();
         List<String> hourValues = new ArrayList<>();
         for (int i = 0; i < 59; i++) {
@@ -231,11 +228,11 @@ public class MainController {
                     long difference = 0;
                     try {
                         difference = dateFormat.parse(then).getTime() - dateFormat.parse(now).getTime();
-                        if (difference < 0){
+                        if (difference < 0) {
                             long oneDay = 24 * 60 * 60 * 1000;
                             difference = oneDay + difference;
                         }
-                        difference = difference/1000;
+                        difference = difference / 1000;
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -277,8 +274,8 @@ public class MainController {
         }
     }
 
-    public static Date addDays(Date date, int days)
-    {
+    //This would get the day in a certain number of days ahead
+    public static Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, days); //minus number would decrement the days
@@ -286,12 +283,12 @@ public class MainController {
     }
 
 
+    //This will update the necessary fields and update the forecast if you go a day in advance
     public void Increment_Breakdown_Day() throws DateOutOfRangeException, FileNotFoundException {
         //on pressing the button to increase the day
-        if(DaysAhead == maxDaysAhead){
+        if (DaysAhead == maxDaysAhead) {
             throw new DateOutOfRangeException("Incremented past available range");
-        }
-        else {
+        } else {
             Current_BreakDown_Day = addDays(Current_BreakDown_Day, 1);
             DaysAhead += 1;
 
@@ -300,7 +297,7 @@ public class MainController {
                 LArrow.setVisible(true);
             } else if (DaysAhead >= maxDaysAhead) {
                 DaysAhead = maxDaysAhead;//in case of button spam, reset this information to protect against future issues
-                Current_BreakDown_Day = addDays(new Date(),maxDaysAhead);
+                Current_BreakDown_Day = addDays(new Date(), maxDaysAhead);
                 RArrow.setVisible(false);
                 DayText.setText(parseDate(Current_BreakDown_Day));
             } else {
@@ -310,17 +307,16 @@ public class MainController {
         }
     }
 
+    //This will update the necessary fields and update the forecast if you go a day behind
     public void Decrement_Breakdown_Day() throws DateOutOfRangeException, FileNotFoundException {
-        // Decrease the day for the weather breakdown by
-        if(DaysAhead == 0){
+        // Decrease the day for the weather breakdown
+        if (DaysAhead == 0) {
             throw new DateOutOfRangeException("Decrementing past available range.");
-        }
-        else {
+        } else {
             Current_BreakDown_Day = addDays(Current_BreakDown_Day, -1);
             DaysAhead -= 1;
             if (DaysAhead <= 0) {
-
-                DaysAhead=0;//in case of button spam, reset this information to protect against future issues
+                DaysAhead = 0;//in case of button spam, reset this information to protect against future issues
                 Current_BreakDown_Day = new Date();
                 DayText.setText("Today");
                 LArrow.setVisible(false);
@@ -338,19 +334,10 @@ public class MainController {
         }
     }
 
-    private String parseDate(Date day){
+    private String parseDate(Date day) {
         DateFormat timeFormat = new SimpleDateFormat("dd/MM");
         return timeFormat.format(day);
     }
-
-    public long getTimeForDayPoint(Date GivenDate, int hour) {
-        Date ToUpdate = (Date) GivenDate.clone();
-        ToUpdate.setHours(hour);
-        ToUpdate.setMinutes(0);
-        ToUpdate.setSeconds(0);
-        return ToUpdate.getTime();
-    }
-
 
     //Gets the long for an hour of the day
     public long getTimeForDayPoint(int hour) {
@@ -359,7 +346,7 @@ public class MainController {
         ToUpdate.setMinutes(0);
         ToUpdate.setSeconds(0);
         long milli = ToUpdate.getTime();//number of milliseconds since 0:00 Jan 1, 1970
-        return milli/1000;//to give it in seconds instead, for the API.
+        return milli / 1000;//to give it in seconds instead, for the API.
     }
 
     //Updates forecast at the bottom of the screen
@@ -379,13 +366,12 @@ public class MainController {
         double afterTemp = CityDataFinder.getFeelsLikeTemperature(Afternoon_Forecast);
         double eveTemp = CityDataFinder.getFeelsLikeTemperature(Eve_Day_Forecast);
 
-        if (isFahrenheit.isSelected()){
+        if (isFahrenheit.isSelected()) {
             e_temp.setText(freedomUnitsConverter(eveTemp) + "°F");
             a_temp.setText(freedomUnitsConverter(afterTemp) + "°F");
             m_temp.setText(freedomUnitsConverter(mornTemp) + "°F");
             em_temp.setText(freedomUnitsConverter(earlyMornTemp) + "°F");
-        }
-        else {
+        } else {
             e_temp.setText(Math.round(eveTemp) + "°C");
             a_temp.setText(Math.round(afterTemp) + "°C");
             m_temp.setText(Math.round(mornTemp) + "°C");
@@ -397,27 +383,27 @@ public class MainController {
         setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
         setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
 
-        if (DaysAhead == 0){
+        if (DaysAhead == 0) {
             DateFormat dateFormat = new SimpleDateFormat("HH");
             Calendar cal = Calendar.getInstance();
             int currentHour = Integer.parseInt(dateFormat.format(cal.getTime()));
 
-            if(currentHour > 7){
+            if (currentHour > 7) {
                 Day_Icon_Early.setImage(null);
                 em_wind.setText("In the past");
                 em_temp.setText("");
             }
-            if (currentHour > 10){
+            if (currentHour > 10) {
                 Day_Icon_Morning.setImage(null);
                 m_wind.setText("In the past");
                 m_temp.setText("");
             }
-            if (currentHour >14){
-               Day_Icon_Afternoon.setImage(null);
-               a_wind.setText("In the past");
-               a_temp.setText("");
+            if (currentHour > 14) {
+                Day_Icon_Afternoon.setImage(null);
+                a_wind.setText("In the past");
+                a_temp.setText("");
             }
-            if (currentHour > 18){
+            if (currentHour > 18) {
                 Day_Icon_Evening.setImage(null);
                 e_wind.setText("In the past");
                 e_temp.setText("");
