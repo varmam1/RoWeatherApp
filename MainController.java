@@ -127,7 +127,7 @@ public class MainController {
         } else {
             info.setText(roundedFL + "°C" + "\nActual: " + roundedActual + "°C");
         }
-        
+
         //This will set the forecast at the bottom correctly
         Current_BreakDown_Day = new Date();//automatically set to current system date on ini
         DaysAhead = 0;
@@ -218,7 +218,7 @@ public class MainController {
                 } else {
                     //Change the text on the button and main screen
                     onOff.setText("Turn Off");
-                    alarmTime.setText(hour + ":" + min);
+                    alarmTime.setText(hour + ":" + min + " - ON");
 
                     //Gets the current time and input time and calculates the difference
                     DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -239,7 +239,14 @@ public class MainController {
 
                     //Sets a song to play the difference far into the future
                     alarmPlayer = new Timeline(new KeyFrame(Duration.seconds(difference), (e -> {
-                        AlarmPlayer.playAlarm();
+                        try {
+                            if (!FlagGetter.getFlagColor().equals("Red")) {
+                                AlarmPlayer.playAlarm();
+                                alarmTime.setText("OFF");
+                            }
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     })));
                     alarmPlayer.play();
                 }
