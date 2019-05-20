@@ -8,7 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -288,53 +287,63 @@ public class MainController {
     }
 
 
-    //This will update the necessary fields and update the forecast if you go a day in advance
+    //This will update the necessary fields and update the forecast to one day ahead
+    // [Call on pressing the R Arrow button to increase the day]
     public void Increment_Breakdown_Day() throws DateOutOfRangeException, FileNotFoundException {
-        //on pressing the button to increase the day
-        if (DaysAhead == maxDaysAhead) {
+
+        if (DaysAhead == maxDaysAhead) {//first check for illegal press and throw error, else continue to regular section
             throw new DateOutOfRangeException("Incremented past available range");
         } else {
             Current_BreakDown_Day = addDays(Current_BreakDown_Day, 1);
             DaysAhead += 1;
-
+            //Now update the arrow's visibility, and label text
             if (DaysAhead == 1) {
                 DayText.setText("Tomorrow");
                 LArrow.setVisible(true);
             } else if (DaysAhead >= maxDaysAhead) {
-                DaysAhead = maxDaysAhead;//in case of button spam, reset this information to protect against future issues
+                DaysAhead = maxDaysAhead;
                 Current_BreakDown_Day = addDays(new Date(), maxDaysAhead);
+                // ^^ in case of button spam, reset this information to protect against future issues
+
                 RArrow.setVisible(false);
-                DayText.setText(parseDate(Current_BreakDown_Day));
+                DayText.setText(parseDate(Current_BreakDown_Day));//change text to the date shown for 2+ days away
             } else {
-                DayText.setText(parseDate(Current_BreakDown_Day));
+                DayText.setText(parseDate(Current_BreakDown_Day));//change text to the date shown for 2+ days away
             }
+            //finally, call info elements to update to new current forecast day.
             UpdateForecastBreakdown();
         }
     }
 
-    //This will update the necessary fields and update the forecast if you go a day behind
+    //This will update the necessary fields and update the forecast for rolling forecast back one day
+    //Call on presses of the L Arrow button
     public void Decrement_Breakdown_Day() throws DateOutOfRangeException, FileNotFoundException {
-        // Decrease the day for the weather breakdown
+       //First check for illegal function call when the buttone should be invisible.
         if (DaysAhead == 0) {
             throw new DateOutOfRangeException("Decrementing past available range.");
-        } else {
+        }
+        else {
+            // Decrease the day for the weather breakdown
             Current_BreakDown_Day = addDays(Current_BreakDown_Day, -1);
             DaysAhead -= 1;
+            //now update arrow visibility and label text
             if (DaysAhead <= 0) {
-                DaysAhead = 0;//in case of button spam, reset this information to protect against future issues
+                DaysAhead = 0;
                 Current_BreakDown_Day = new Date();
+                // ^^ in case of button spam, reset this information to protect against future issues
                 DayText.setText("Today");
                 LArrow.setVisible(false);
             } else if (DaysAhead == maxDaysAhead - 1) {
                 RArrow.setVisible(true);
-                DayText.setText(parseDate(Current_BreakDown_Day));
+                DayText.setText(parseDate(Current_BreakDown_Day));//for date 2+ days in future set text to that date
             } else {
                 if (DaysAhead == 1) {//if the date has now rolled back to being the day after today...
                     DayText.setText("Tomorrow");
                 } else {
-                    DayText.setText(parseDate(Current_BreakDown_Day));
+                    DayText.setText(parseDate(Current_BreakDown_Day));//for date 2+ days in future set text to that date
                 }
             }
+            //Finally call info elements to update.
             UpdateForecastBreakdown();
         }
     }
@@ -344,33 +353,34 @@ public class MainController {
         return timeFormat.format(day);
     }
 
-    //Gets the long for an hour of the day
+    //Gets the long for an hour of the day set as current_Breakdown_Day
     public long getTimeForDayPoint(int hour) {
-        Date ToUpdate = (Date) Current_BreakDown_Day.clone();
-        ToUpdate.setHours(hour);
+        Date ToUpdate = (Date) Current_BreakDown_Day.clone();//clone for object immutability
+        ToUpdate.setHours(hour);//set to a round hour, but fir
         ToUpdate.setMinutes(0);
         ToUpdate.setSeconds(0);
         long milli = ToUpdate.getTime();//number of milliseconds since 0:00 Jan 1, 1970
-        return milli / 1000;//to give it in seconds instead, for the API.
+        return milli / 1000;//division to give it in seconds instead, for the API.
     }
 
     //Updates forecast at the bottom of the screen
     private void UpdateForecastBreakdown() throws FileNotFoundException { //Assumes an updated date to base the update off of.
+        //COllect Data from API by providing it with a long time value for the different hours of the current_b._day
         Map<String, Double> Early_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(7));
         Map<String, Double> Morning_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(10));
         Map<String, Double> Afternoon_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(14));
         Map<String, Double> Eve_Day_Forecast = ForecastInfo.todayForecastInTimeT(getTimeForDayPoint(18));
-
+        // Use the returned data to update the text redouts of wind predictions
         em_wind.setText(CityDataFinder.getWindSpeed(Early_Day_Forecast) + " m/s");
         m_wind.setText(CityDataFinder.getWindSpeed(Morning_Day_Forecast) + " m/s");
         a_wind.setText(CityDataFinder.getWindSpeed(Afternoon_Forecast) + " m/s");
         e_wind.setText(CityDataFinder.getWindSpeed(Eve_Day_Forecast) + " m/s");
-
+        // Colect temperature prediction values
         double earlyMornTemp = CityDataFinder.getFeelsLikeTemperature(Early_Day_Forecast);
         double mornTemp = CityDataFinder.getFeelsLikeTemperature(Morning_Day_Forecast);
         double afterTemp = CityDataFinder.getFeelsLikeTemperature(Afternoon_Forecast);
         double eveTemp = CityDataFinder.getFeelsLikeTemperature(Eve_Day_Forecast);
-
+        //Set temperature number values based on whether the app is currently set to display in F or C
         if (isFahrenheit.isSelected()) {
             e_temp.setText(freedomUnitsConverter(eveTemp) + "°F");
             a_temp.setText(freedomUnitsConverter(afterTemp) + "°F");
@@ -382,36 +392,40 @@ public class MainController {
             m_temp.setText(Math.round(mornTemp) + "°C");
             em_temp.setText(Math.round(earlyMornTemp) + "°C");
         }
-
+        //Now update the image icons to represent the predicted weather type
         setWeatherPicture(Day_Icon_Early, CityDataFinder.getWeatherType(Early_Day_Forecast));
         setWeatherPicture(Day_Icon_Morning, CityDataFinder.getWeatherType(Morning_Day_Forecast));
         setWeatherPicture(Day_Icon_Afternoon, CityDataFinder.getWeatherType(Afternoon_Forecast));
         setWeatherPicture(Day_Icon_Evening, CityDataFinder.getWeatherType(Eve_Day_Forecast));
-
+        //If the current breakdown day is today, so some breakdown timeslots are actually in the past,
+        // aka without "predictions"...
         if (DaysAhead == 0) {
             DateFormat dateFormat = new SimpleDateFormat("HH");
             Calendar cal = Calendar.getInstance();
             int currentHour = Integer.parseInt(dateFormat.format(cal.getTime()));
 
-            if (currentHour > 7) {
+            if (currentHour > 7) {//if past morning, set morning wind text instead to "in the past".
                 Day_Icon_Early.setImage(null);
                 em_wind.setText("In the past");
                 em_temp.setText("");
-            }
-            if (currentHour > 10) {
-                Day_Icon_Morning.setImage(null);
-                m_wind.setText("In the past");
-                m_temp.setText("");
-            }
-            if (currentHour > 14) {
-                Day_Icon_Afternoon.setImage(null);
-                a_wind.setText("In the past");
-                a_temp.setText("");
-            }
-            if (currentHour > 18) {
-                Day_Icon_Evening.setImage(null);
-                e_wind.setText("In the past");
-                e_temp.setText("");
+
+                if (currentHour > 10) {//as above for past late morning
+                    Day_Icon_Morning.setImage(null);
+                    m_wind.setText("In the past");
+                    m_temp.setText("");
+
+                    if (currentHour > 14) {// for past afternoon too...
+                        Day_Icon_Afternoon.setImage(null);
+                        a_wind.setText("In the past");
+                        a_temp.setText("");
+
+                        if (currentHour > 18) {//for past evening...
+                            Day_Icon_Evening.setImage(null);
+                            e_wind.setText("In the past");
+                            e_temp.setText("");
+                        }
+                    }
+                }
             }
         }
     }
