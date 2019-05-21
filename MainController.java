@@ -240,6 +240,8 @@ public class MainController {
                             if (!FlagGetter.getFlagColor().equals("Red")) {
                                 AlarmPlayer.playAlarm();
                                 alarmTime.setText("OFF");
+                                onOff.setSelected(false);
+                                onOff.setText("Turn On");
                             }
                         } catch (IOException e1) {
                             e1.printStackTrace();
